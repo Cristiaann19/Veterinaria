@@ -1,0 +1,104 @@
+<section id="contact" class="pt-32 pb-12 px-6 bg-white relative overflow-hidden text-gray-900">
+  <div class="max-w-7xl mx-auto">
+
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-20">
+
+      <!-- Info -->
+      <div>
+        <span class="!font-mono text-xs uppercase tracking-[0.3em] text-gray-500 mb-4 block">Contacto</span>
+        <h2 class="text-5xl md:text-7xl !font-display font-bold mb-8">Visítanos</h2>
+        <p class="text-gray-600 mb-12">
+          ¿Tienes dudas sobre nuestros servicios o quieres agendar una cita para tu mascota?
+          Estamos disponibles para atenderte con el cuidado que tu compañero merece.
+        </p>
+
+        <div class="space-y-6">
+          <div class="flex items-center gap-4 group">
+            <div class="w-12 h-12 rounded-full border border-gray-300 flex items-center justify-center group-hover:bg-gray-900 group-hover:text-white transition-all duration-500">
+              <span class="material-symbols-outlined text-[20px]">mail</span>
+            </div>
+            <span class="text-lg text-gray-600">cristianJ&#64;huellitasvet.com</span>
+          </div>
+
+          <div class="flex items-center gap-4 group">
+            <div class="w-12 h-12 rounded-full border border-gray-300 flex items-center justify-center group-hover:bg-gray-900 group-hover:text-white transition-all duration-500">
+              <span class="material-symbols-outlined text-[20px]">phone</span>
+            </div>
+            <span class="text-lg text-gray-600">+51 999 999 999</span>
+          </div>
+
+          <div class="flex items-center gap-4 group">
+            <div class="w-12 h-12 rounded-full border border-gray-300 flex items-center justify-center group-hover:bg-gray-900 group-hover:text-white transition-all duration-500">
+              <span class="material-symbols-outlined text-[20px]">location_on</span>
+            </div>
+            <span class="text-lg text-gray-600">Av. Sáenz Peña 580, Chiclayo, Perú</span>
+          </div>
+
+          <div class="flex items-center gap-4 group">
+            <div class="w-12 h-12 rounded-full border border-gray-300 flex items-center justify-center group-hover:bg-gray-900 group-hover:text-white transition-all duration-500">
+              <span class="material-symbols-outlined text-[20px]">schedule</span>
+            </div>
+            <span class="text-lg text-gray-600">Lun – Sáb: 8am – 8pm &nbsp;|&nbsp; Dom: 10am – 2pm</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Formulario -->
+      <div class="bg-white p-10 rounded-3xl border border-gray-200 shadow-sm">
+        <div class="space-y-6">
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="space-y-2">
+              <label class="text-[10px] uppercase tracking-widest text-gray-500 ml-4">Nombre</label>
+              <input
+                type="text"
+                [(ngModel)]="form.nombre"
+                placeholder="Tu nombre"
+                class="w-full bg-gray-50 border border-gray-200 rounded-full px-6 py-4 focus:outline-none focus:border-gray-400 transition-colors text-gray-900 placeholder:text-gray-400"
+              />
+            </div>
+            <div class="space-y-2">
+              <label class="text-[10px] uppercase tracking-widest text-gray-500 ml-4">Email</label>
+              <input
+                type="email"
+                [(ngModel)]="form.email"
+                placeholder="tu@email.com"
+                class="w-full bg-gray-50 border border-gray-200 rounded-full px-6 py-4 focus:outline-none focus:border-gray-400 transition-colors text-gray-900 placeholder:text-gray-400"
+              />
+            </div>
+          </div>
+
+          <div class="space-y-2">
+            <label class="text-[10px] uppercase tracking-widest text-gray-500 ml-4">Asunto</label>
+            <input
+              type="text"
+              [(ngModel)]="form.asunto"
+              placeholder="¿En qué podemos ayudarte?"
+              class="w-full bg-gray-50 border border-gray-200 rounded-full px-6 py-4 focus:outline-none focus:border-gray-400 transition-colors text-gray-900 placeholder:text-gray-400"
+            />
+          </div>
+
+          <div class="space-y-2">
+            <label class="text-[10px] uppercase tracking-widest text-gray-500 ml-4">Mensaje</label>
+            <textarea
+              rows="4"
+              [(ngModel)]="form.mensaje"
+              placeholder="Cuéntanos sobre tu mascota..."
+              class="w-full bg-gray-50 border border-gray-200 rounded-3xl px-6 py-4 focus:outline-none focus:border-gray-400 transition-colors resize-none text-gray-900 placeholder:text-gray-400"
+            ></textarea>
+          </div>
+
+          <button
+            (click)="enviar()"
+            class="w-full bg-gray-900 text-white font-medium py-5 rounded-full uppercase tracking-widest hover:bg-transparent hover:text-gray-900 border border-gray-900 transition-all duration-500"
+          >
+            Enviar Mensaje
+          </button>
+
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+</section>

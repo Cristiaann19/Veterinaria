@@ -1,0 +1,59 @@
+<section class="relative h-[200vh] w-full bg-white overflow-hidden">
+  <div class="sticky top-0 h-screen w-full flex items-center justify-center overflow-hidden">
+    <div
+      class="absolute inset-0 z-0 transition-transform duration-75 ease-out"
+      [style.transform]="'scale(' + imageScale + ')'"
+      [style.opacity]="scrollOpacity">
+
+      <video
+        autoplay
+        muted
+        loop
+        playsinline
+        preload="auto"
+        class="w-full h-full object-cover object-center opacity-40"
+      >
+        <source
+          src="https://res.cloudinary.com/ddxdadxtr/video/upload/v1786930865/peluche_ybwohv.webm"
+          type="video/webm"
+        />
+      </video>
+      <div class="absolute inset-0 bg-gradient-to-b from-white/80 via-transparent to-white"></div>
+    </div>
+
+    <div
+      class="relative z-10 text-center px-6 text-gray-900"
+      [style.transform]="'translateY(' + textY + 'px)'"
+      [style.opacity]="scrollOpacity">
+
+      <span class="fade-in block !font-mono text-xs uppercase tracking-[0.5em] mb-4 opacity-60">
+        Cuidado Profesional
+      </span>
+
+      <h1 class="fade-in-up text-6xl md:text-[10rem] font-bold leading-none tracking-tighter mb-6">
+        Huellitas
+      </h1>
+
+      <p class="fade-in-delay max-w-lg mx-auto text-lg md:text-xl font-light mb-12 opacity-70">
+        Porque su bienestar es nuestra misión. Medicina veterinaria de alta precisión con el amor que ellos merecen.
+      </p>
+
+      <div class="fade-in-buttons flex flex-col sm:flex-row items-center justify-center gap-4">
+        <a [routerLink]="['/inicio']" fragment="services"
+           class="px-10 py-4 rounded-full border border-gray-900/20 text-gray-900 text-sm uppercase tracking-widest hover:bg-gray-900 hover:text-white transition-all duration-500">
+          Nuestros Servicios
+        </a>
+        <a routerLink="/agendar-cita"
+           class="px-10 py-4 rounded-full bg-gray-900 text-white text-sm uppercase tracking-widest hover:bg-transparent hover:text-gray-900 border border-gray-900 transition-all duration-500">
+          Agendar Cita
+        </a>
+      </div>
+    </div>
+
+    <div class="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 opacity-40">
+      <span class="text-[10px] uppercase tracking-widest text-gray-600">Desliza</span>
+      <div class="w-[1px] h-12 bg-gradient-to-b from-gray-900/60 to-transparent"></div>
+    </div>
+
+  </div>
+</section>

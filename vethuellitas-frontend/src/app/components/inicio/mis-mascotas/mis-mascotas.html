@@ -1,0 +1,182 @@
+<div class="min-h-screen bg-white text-emerald-700 px-6 py-24">
+  <div class="max-w-3xl mx-auto">
+
+    <!-- Botón regresar -->
+    <a routerLink="/inicio"
+       class="inline-flex items-center gap-2 font-mono text-xs uppercase tracking-widest text-[#888C94] hover:text-emerald-700 transition-colors mb-12 group cursor-pointer">
+      <i class="pi pi-arrow-left group-hover:-translate-x-1 transition-transform"></i>
+      Regresar
+    </a>
+
+    <!-- Header -->
+    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-end gap-6 mb-12">
+      <div>
+        <span class="font-mono text-xs uppercase tracking-[0.3em] text-[#888C94]  mb-4 block">Mi cuenta</span>
+        <h2 class="text-5xl text-black font-display font-bold mb-2">Mis Mascotas</h2>
+        <p class="text-[#888C94] text-sm font-mono">{{ mascotas.length }} mascota(s) registrada(s)</p>
+      </div>
+      <button (click)="abrirNuevo()"
+              class="border border-emerald-600/40 text-emerald-700 text-xs font-mono uppercase tracking-widest px-6 py-3 hover:bg-emerald-600 hover:text-white transition-all whitespace-nowrap cursor-pointer">
+        + Agregar mascota
+      </button>
+    </div>
+
+    <!-- Loading -->
+    @if (cargando) {
+      <div class="flex flex-col items-center py-32 gap-4">
+        <i class="pi pi-spin pi-spinner text-4xl text-emerald-600/40"></i>
+        <p class="font-mono text-xs text-emerald-700/50 uppercase tracking-widest">Cargando...</p>
+      </div>
+    }
+
+    <!-- Sin mascotas -->
+    @if (!cargando && mascotas.length === 0) {
+      <div class="flex flex-col items-center py-32 gap-6 border border-emerald-900/10 text-center">
+        <span class="material-symbols-outlined text-emerald-700/30" style="font-size:80px">pets</span>
+        <div>
+          <h3 class="text-xl font-bold  text-gray-700 mb-2">Sin mascotas registradas</h3>
+          <p class="font-mono text-xs text-[#959BA6] uppercase tracking-widest mb-2">
+            Registra tu mascota para poder agendar citas
+          </p>
+        </div>
+        <button (click)="abrirNuevo()"
+                class="border border-emerald-600 text-emerald-700 text-xs font-mono uppercase tracking-widest px-8 py-3 hover:bg-emerald-700 hover:text-white transition-all cursor-pointer">
+          Registrar primera mascota
+        </button>
+      </div>
+    }
+
+    <!-- Lista mascotas -->
+    @if (!cargando && mascotas.length > 0) {
+      <div class="flex flex-col gap-2">
+        @for (m of mascotas; track m.id) {
+          <div class="border border-emerald-900/10 hover:border-emerald-600/30 transition-colors p-5 flex items-center justify-between gap-4">
+            <div class="flex items-center gap-4">
+              <div class="w-12 h-12 border border-emerald-900/15 rounded-xl flex items-center justify-center flex-shrink-0">
+                <span class="material-symbols-outlined text-emerald-700/50">
+                  {{ m.especie === 'Canina' ? 'sound_detection_dog_barking' : 'pets' }}
+                </span>
+              </div>
+              <div>
+                <p class="font-bold text-emerald-700">{{ m.nombre }}</p>
+                <p class="font-mono text-xs text-emerald-700/50 mt-0.5">
+                  {{ m.especie }} · {{ m.raza }} · {{ m.sexo }}
+                </p>
+                <p class="font-mono text-xs text-emerald-700/30 mt-0.5">
+                  {{ m.edad }} · {{ m.peso }} kg
+                </p>
+              </div>
+            </div>
+            <button (click)="confirmarEliminar(m)"
+                    class="font-mono text-[10px] uppercase tracking-widest text-red-600/50 hover:text-red-600 transition-colors cursor-pointer flex-shrink-0">
+              Eliminar
+            </button>
+          </div>
+        }
+      </div>
+
+      <!-- CTA agendar cita -->
+      <div class="mt-8 border border-emerald-900/10 p-6 flex items-center justify-between gap-4">
+        <div>
+          <p class="font-semibold text-emerald-700/80 text-sm">¿Listo para agendar una cita?</p>
+          <p class="font-mono text-xs text-emerald-700/50 mt-1">Tienes {{ mascotas.length }} mascota(s) disponible(s)</p>
+        </div>
+        <a routerLink="/agendar-cita"
+           class="border border-emerald-600/40 text-emerald-700 text-xs font-mono uppercase tracking-widest px-6 py-3 hover:bg-emerald-600 hover:text-white transition-all whitespace-nowrap cursor-pointer">
+          Agendar cita →
+        </a>
+      </div>
+    }
+
+  </div>
+</div>
+
+<!-- MODAL NUEVA MASCOTA -->
+@if (displayNew) {
+  <div class="fixed inset-0 bg-gray-900/50 backdrop-blur-sm z-50 flex items-center justify-center px-4">
+    <div class="bg-white border border-emerald-900/15 rounded-2xl w-full max-w-md p-8 shadow-xl">
+      <h3 class="text-xl font-bold text-emerald-700 mb-6">Registrar Mascota</h3>
+      <div class="flex flex-col gap-4">
+        <div class="grid grid-cols-2 gap-4">
+          <div>
+            <label class="font-mono text-[10px] uppercase tracking-widest text-emerald-700/50 block mb-2">Nombre *</label>
+            <input [(ngModel)]="mascotaSeleccionada.nombre"
+                   class="w-full bg-emerald-50/60 border border-emerald-900/15 text-emerald-800 px-4 py-3 rounded-xl outline-none focus:border-emerald-600 text-sm"
+                   placeholder="Ej: Luna"/>
+          </div>
+          <div>
+            <label class="font-mono text-[10px] uppercase tracking-widest text-emerald-700/50 block mb-2">Especie *</label>
+            <select [(ngModel)]="mascotaSeleccionada.especie"
+                    class="w-full bg-emerald-50/60 border border-emerald-900/15 text-emerald-800 px-4 py-3 rounded-xl outline-none focus:border-emerald-600 text-sm [color-scheme:light]">
+              @for (e of especies; track e) { <option [value]="e">{{ e }}</option> }
+            </select>
+          </div>
+          <div>
+            <label class="font-mono text-[10px] uppercase tracking-widest text-emerald-700/50 block mb-2">Raza *</label>
+            <input [(ngModel)]="mascotaSeleccionada.raza"
+                   class="w-full bg-emerald-50/60 border border-emerald-900/15 text-emerald-800 px-4 py-3 rounded-xl outline-none focus:border-emerald-600 text-sm"
+                   placeholder="Ej: Labrador"/>
+          </div>
+          <div>
+            <label class="font-mono text-[10px] uppercase tracking-widest text-emerald-700/50 block mb-2">Sexo *</label>
+            <select [(ngModel)]="mascotaSeleccionada.sexo"
+                    class="w-full bg-emerald-50/60 border border-emerald-900/15 text-emerald-800 px-4 py-3 rounded-xl outline-none focus:border-emerald-600 text-sm [color-scheme:light]">
+              @for (s of sexos; track s) { <option [value]="s">{{ s }}</option> }
+            </select>
+          </div>
+          <div>
+            <label class="font-mono text-[10px] uppercase tracking-widest text-emerald-700/50 block mb-2">Edad *</label>
+            <input [(ngModel)]="mascotaSeleccionada.edad"
+                   class="w-full bg-emerald-50/60 border border-emerald-900/15 text-emerald-800 px-4 py-3 rounded-xl outline-none focus:border-emerald-600 text-sm"
+                   placeholder="Ej: 2 años"/>
+          </div>
+          <div>
+            <label class="font-mono text-[10px] uppercase tracking-widest text-emerald-700/50 block mb-2">Peso (kg) *</label>
+            <input type="number" [(ngModel)]="mascotaSeleccionada.peso"
+                   class="w-full bg-emerald-50/60 border border-emerald-900/15 text-emerald-800 px-4 py-3 rounded-xl outline-none focus:border-emerald-600 text-sm"
+                   placeholder="5.5"/>
+          </div>
+        </div>
+        <div>
+          <label class="font-mono text-[10px] uppercase tracking-widest text-emerald-700/50 block mb-2">Observaciones</label>
+          <textarea [(ngModel)]="mascotaSeleccionada.observaciones" rows="2"
+                    class="w-full bg-emerald-50/60 border border-emerald-900/15 text-emerald-800 px-4 py-3 rounded-xl outline-none focus:border-emerald-600 text-sm resize-none"
+                    placeholder="Alergias, condiciones especiales..."></textarea>
+        </div>
+      </div>
+      <div class="flex gap-3 mt-6">
+        <button (click)="displayNew = false"
+                class="flex-1 border border-emerald-900/15 text-emerald-700/60 hover:text-emerald-700 hover:border-emerald-600/40 py-3 font-mono text-xs uppercase tracking-widest transition-all cursor-pointer">
+          Cancelar
+        </button>
+        <button (click)="guardarNuevo()"
+                class="flex-1 bg-emerald-600 text-white py-3 font-mono text-xs uppercase tracking-widest hover:bg-emerald-700 transition-all cursor-pointer">
+          Registrar
+        </button>
+      </div>
+    </div>
+  </div>
+}
+
+<!-- MODAL ELIMINAR -->
+@if (displayDelete) {
+  <div class="fixed inset-0 bg-gray-900/50 backdrop-blur-sm z-50 flex items-center justify-center px-4">
+    <div class="bg-white border border-emerald-900/15 rounded-2xl w-full max-w-sm p-8 text-center shadow-xl">
+      <div class="w-16 h-16 border border-red-400/20 rounded-full flex items-center justify-center mx-auto mb-4">
+        <i class="pi pi-trash text-red-600 text-xl"></i>
+      </div>
+      <h3 class="text-lg font-bold text-emerald-700 mb-2">¿Eliminar a {{ mascotaSeleccionada.nombre }}?</h3>
+      <p class="text-emerald-700/60 text-sm font-mono mb-6">Esta acción no se puede deshacer</p>
+      <div class="flex gap-3">
+        <button (click)="displayDelete = false"
+                class="flex-1 border border-emerald-900/15 text-emerald-700/60 hover:text-emerald-700 py-3 font-mono text-xs uppercase tracking-widest transition-all cursor-pointer">
+          Cancelar
+        </button>
+        <button (click)="eliminar()"
+                class="flex-1 border border-red-600/40 text-red-600 hover:bg-red-600 hover:text-white py-3 font-mono text-xs uppercase tracking-widest transition-all cursor-pointer">
+          Eliminar
+        </button>
+      </div>
+    </div>
+  </div>
+}

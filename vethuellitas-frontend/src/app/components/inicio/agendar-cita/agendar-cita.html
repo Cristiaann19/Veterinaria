@@ -1,0 +1,291 @@
+<div class="min-h-screen bg-white text-emerald-700 px-6 py-24">
+  <div class="max-w-2xl mx-auto">
+
+    <!-- Botón regresar -->
+    <a routerLink="/inicio"
+       class="inline-flex items-center gap-2 font-mono text-xs uppercase tracking-widest text-[#888C94] hover:text-emerald-700 transition-colors mb-12 group cursor-pointer">
+      <i class="pi pi-arrow-left group-hover:-translate-x-1 transition-transform"></i>
+      Regresar
+    </a>
+
+    <!-- Exitoso -->
+    @if (exitoso) {
+      <div class="flex flex-col items-center text-center gap-8 py-16">
+        <div class="w-24 h-24 border-2 border-emerald-600/30 rounded-full flex items-center justify-center">
+          <i class="pi pi-check text-4xl text-emerald-600"></i>
+        </div>
+        <div>
+          <h2 class="text-4xl text-black font-display font-bold mb-3">¡Cita agendada!</h2>
+          <p class="text-[#888C94] font-mono text-sm">Tu cita ha sido registrada correctamente</p>
+        </div>
+        <div class="border border-emerald-900/10 rounded-2xl p-6 w-full text-left">
+          <div class="grid grid-cols-2 gap-4">
+            <div>
+              <p class="font-mono text-[10px] text-[#888C94] uppercase tracking-widest mb-1">Servicio</p>
+              <p class="text-sm font-semibold text-gray-700">{{ servicioSeleccionado?.nombre }}</p>
+            </div>
+            <div>
+              <p class="font-mono text-[10px] text-[#888C94] uppercase tracking-widest mb-1">Mascota</p>
+              <p class="text-sm font-semibold text-gray-700">{{ mascotaSeleccionada?.nombre }}</p>
+            </div>
+            <div>
+              <p class="font-mono text-[10px] text-[#888C94] uppercase tracking-widest mb-1">Fecha</p>
+              <p class="text-sm font-semibold text-gray-700">{{ fechaHora | date:'dd/MM/yyyy HH:mm' }}</p>
+            </div>
+            <div>
+              <p class="font-mono text-[10px] text-[#888C94] uppercase tracking-widest mb-1">Profesional</p>
+              <p class="text-sm font-semibold text-gray-700">{{ trabajadorSeleccionado?.nombres }} {{ trabajadorSeleccionado?.apellidos }}</p>
+            </div>
+          </div>
+        </div>
+        <button (click)="irAMisCitas()"
+                class="border border-emerald-600/40 text-emerald-700 text-xs font-mono uppercase tracking-widest px-10 py-3 hover:bg-emerald-600 hover:text-white transition-all cursor-pointer">
+          Ver mis citas
+        </button>
+      </div>
+    }
+
+    <!-- No logueado -->
+    @if (!estaLogueado && !exitoso) {
+      <div class="flex flex-col items-center text-center gap-6 py-20 border border-emerald-900/10">
+        <i class="pi pi-lock text-5xl text-emerald-600/40"></i>
+        <div>
+          <h3 class="text-xl font-bold text-emerald-700/70 mb-2">Inicia sesión para agendar</h3>
+          <p class="font-mono text-xs text-[#888C94] uppercase tracking-widest">Necesitas una cuenta de cliente</p>
+        </div>
+        <a routerLink="/login"
+           class="border border-emerald-600/40 text-emerald-700 text-xs font-mono uppercase tracking-widest px-8 py-3 hover:bg-emerald-600 hover:text-white transition-all">
+          Iniciar sesión
+        </a>
+      </div>
+    }
+
+    <!-- Formulario por pasos -->
+    @if (estaLogueado && !exitoso) {
+
+      <!-- Header -->
+      <div class="mb-12">
+        <span class="font-mono text-xs uppercase tracking-[0.3em] text-[#888C94] mb-4 block">Citas</span>
+        <h2 class="text-5xl text-black font-display font-bold mb-3">Agendar Cita</h2>
+        <p class="text-[#888C94] text-sm font-mono">Paso {{ paso }} de 4</p>
+      </div>
+
+      <!-- Indicador de pasos -->
+      <div class="flex items-center gap-2 mb-12">
+        @for (n of [1,2,3,4]; track n) {
+          <div class="flex items-center gap-2 flex-1">
+            <div class="w-8 h-8 rounded-full border flex items-center justify-center text-xs font-mono transition-all"
+                 [ngClass]="paso > n
+                   ? 'bg-emerald-600 text-white border-emerald-600'
+                   : paso === n
+                     ? 'border-emerald-600 text-emerald-700'
+                     : 'border-emerald-900/15 text-emerald-900/30'">
+              @if (paso > n) { <i class="pi pi-check text-xs"></i> } @else { {{ n }} }
+            </div>
+            @if (n < 4) {
+              <div class="flex-1 h-px transition-all"
+                   [ngClass]="paso > n ? 'bg-emerald-600/40' : 'bg-emerald-900/15'"></div>
+            }
+          </div>
+        }
+      </div>
+
+      <!-- ── PASO 1: Servicio ── -->
+      @if (paso === 1) {
+        <div>
+          <h3 class="text-2xl font-bold text-gray-700 mb-2">¿Qué servicio necesitas?</h3>
+          <p class="text-[#888C94] text-sm font-mono mb-8">Selecciona el tipo de atención</p>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+            @for (s of servicios; track s.id) {
+              <div (click)="elegirServicio(s)"
+                   class="border p-5 cursor-pointer transition-all hover:border-emerald-600/40"
+                   [ngClass]="servicioSeleccionado?.id === s.id
+                     ? 'border-emerald-600 bg-emerald-50'
+                     : 'border-emerald-900/10 hover:bg-emerald-50/40'">
+                <div class="flex items-center justify-between mb-2">
+                  <span class="material-symbols-outlined text-emerald-700/70">{{ s.icono }}</span>
+                  @if (servicioSeleccionado?.id === s.id) {
+                    <i class="pi pi-check-circle text-emerald-600 text-sm"></i>
+                  }
+                </div>
+                <p class="font-semibold text-sm text-gray-700">{{ s.nombre }}</p>
+                <p class="text-gray-700 text-xs mt-1">{{ s.descripcion }}</p>
+                <p class="font-mono text-xs text-emerald-700/70 mt-3">S/ {{ s.precio }}</p>
+              </div>
+            }
+          </div>
+        </div>
+      }
+
+      <!-- ── PASO 2: Mascota ── -->
+      @if (paso === 2) {
+        <div>
+          <h3 class="text-2xl font-bold text-gray-700 mb-2">¿Para qué mascota?</h3>
+          <p class="text-[#888C94] text-sm font-mono mb-8">Selecciona tu mascota</p>
+          @if (mascotas.length === 0) {
+            <div class="border border-emerald-900/10 p-10 text-center">
+              <i class="pi pi-heart text-4xl text-emerald-600/30 mb-4 block"></i>
+              <p class="text-emerald-700/60 text-sm">No tienes mascotas registradas</p>
+              <p class="font-mono text-xs text-emerald-700/30 mt-2 uppercase tracking-widest">Contacta con recepción</p>
+            </div>
+          }
+          <div class="flex flex-col gap-2">
+            @for (m of mascotas; track m.id) {
+              <div (click)="elegirMascota(m)"
+                   class="border p-4 cursor-pointer transition-all flex items-center justify-between"
+                   [ngClass]="mascotaSeleccionada?.id === m.id
+                     ? 'border-emerald-600 bg-emerald-50'
+                     : 'border-emerald-900/10 hover:border-emerald-600/40 hover:bg-emerald-50/40'">
+                <div class="flex items-center gap-4">
+                  <div class="w-10 h-10 border border-emerald-900/15 rounded-xl flex items-center justify-center">
+                    <i class="pi pi-heart text-emerald-700/50"></i>
+                  </div>
+                  <div>
+                    <p class="font-semibold text-sm text-gray-700">{{ m.nombre }}</p>
+                    <p class="text-gray-700 text-xs font-mono">{{ m.especie }} · {{ m.raza }}</p>
+                  </div>
+                </div>
+                @if (mascotaSeleccionada?.id === m.id) {
+                  <i class="pi pi-check-circle text-emerald-600"></i>
+                }
+              </div>
+            }
+          </div>
+        </div>
+      }
+
+      <!-- ── PASO 3: Fecha y Profesional ── -->
+      @if (paso === 3) {
+        <div>
+          <h3 class="text-2xl font-bold text-gray-700 mb-2">Fecha y profesional</h3>
+          <p class="text-[#888C94] text-sm font-mono mb-8">Elige cuándo y con quién</p>
+
+          <!-- Fecha/hora -->
+          <div class="mb-6">
+            <label class="font-mono text-[10px] uppercase tracking-[0.3em] text-emerald-700/50 block mb-3">
+              Fecha y hora
+            </label>
+            <input type="datetime-local"
+                   [(ngModel)]="fechaHora"
+                   [min]="fechaMin"
+                   (change)="buscarTrabajadores()"
+                   class="w-full bg-emerald-50/60 border border-emerald-900/15 text-emerald-800 px-4 py-3 rounded-xl outline-none focus:border-emerald-600 transition-all font-mono text-sm [color-scheme:light]"/>
+          </div>
+
+          <!-- Profesionales disponibles -->
+          @if (cargandoTrabajadores) {
+            <div class="flex items-center gap-3 py-8 text-emerald-700/50">
+              <i class="pi pi-spin pi-spinner"></i>
+              <span class="font-mono text-xs uppercase tracking-widest">Buscando disponibilidad...</span>
+            </div>
+          }
+
+          @if (!cargandoTrabajadores && fechaHora && trabajadoresDisponibles.length === 0) {
+            <div class="border border-emerald-900/10 p-6 text-center">
+              <p class="text-emerald-700/60 text-sm">No hay profesionales disponibles en este horario</p>
+              <p class="font-mono text-xs text-emerald-700/30 mt-1">Prueba con otra fecha u hora</p>
+            </div>
+          }
+
+          @if (!cargandoTrabajadores && trabajadoresDisponibles.length > 0) {
+            <div>
+              <label class="font-mono text-[10px] uppercase tracking-[0.3em] text-emerald-700/50 block mb-3">
+                Profesionales disponibles
+              </label>
+              <div class="flex flex-col gap-2">
+                @for (t of trabajadoresDisponibles; track t.id) {
+                  <div (click)="elegirTrabajador(t)"
+                       class="border p-4 cursor-pointer transition-all flex items-center justify-between"
+                       [ngClass]="trabajadorSeleccionado?.id === t.id
+                         ? 'border-emerald-600 bg-emerald-50'
+                         : 'border-emerald-900/10 hover:border-emerald-600/40 hover:bg-emerald-50/40'">
+                    <div class="flex items-center gap-4">
+                      <div class="w-10 h-10 border border-emerald-900/15 rounded-xl flex items-center justify-center font-bold text-sm">
+                        {{ t.nombres.charAt(0) }}
+                      </div>
+                      <div>
+                        <p class="font-semibold text-sm text-gray-700">{{ t.nombres }} {{ t.apellidos }}</p>
+                        <p class="text-gray-700 text-xs font-mono">{{ t.cargo }}</p>
+                      </div>
+                    </div>
+                    @if (trabajadorSeleccionado?.id === t.id) {
+                      <i class="pi pi-check-circle text-emerald-600"></i>
+                    }
+                  </div>
+                }
+              </div>
+            </div>
+          }
+        </div>
+      }
+
+      <!-- ── PASO 4: Confirmar ── -->
+      @if (paso === 4) {
+        <div>
+          <h3 class="text-2xl font-bold text-gray-700 mb-2">Confirmar cita</h3>
+          <p class="text-[#888C94] text-sm font-mono mb-8">Revisa los detalles antes de agendar</p>
+
+          <!-- Resumen -->
+          <div class="border border-emerald-900/10 divide-y divide-emerald-900/10 mb-6">
+            <div class="flex justify-between items-center px-5 py-4">
+              <span class="font-mono text-xs text-[#888C94] uppercase tracking-widest">Servicio</span>
+              <span class="text-sm font-semibold text-gray-700">{{ servicioSeleccionado?.nombre }}</span>
+            </div>
+            <div class="flex justify-between items-center px-5 py-4">
+              <span class="font-mono text-xs text-[#888C94] uppercase tracking-widest">Mascota</span>
+              <span class="text-sm font-semibold text-gray-700">{{ mascotaSeleccionada?.nombre }}</span>
+            </div>
+            <div class="flex justify-between items-center px-5 py-4">
+              <span class="font-mono text-xs text-[#888C94] uppercase tracking-widest">Fecha y hora</span>
+              <span class="text-sm font-semibold text-gray-700 font-mono">{{ fechaHora | date:'dd/MM/yyyy HH:mm' }}</span>
+            </div>
+            <div class="flex justify-between items-center px-5 py-4">
+              <span class="font-mono text-xs text-[#888C94] uppercase tracking-widest">Profesional</span>
+              <span class="text-sm font-semibold text-gray-700">{{ trabajadorSeleccionado?.nombres }} {{ trabajadorSeleccionado?.apellidos }}</span>
+            </div>
+            <div class="flex justify-between items-center px-5 py-4">
+              <span class="font-mono text-xs text-[#888C94] uppercase tracking-widest">Precio</span>
+              <span class="text-sm font-bold text-emerald-700">S/ {{ servicioSeleccionado?.precio }}</span>
+            </div>
+          </div>
+
+          <!-- Motivo -->
+          <div class="mb-6">
+            <label class="font-mono text-[10px] uppercase tracking-[0.3em] text-emerald-700/50 block mb-3">
+              Motivo de la consulta *
+            </label>
+            <textarea [(ngModel)]="motivo" rows="3"
+                      placeholder="Describe brevemente el motivo de la cita..."
+                      class="w-full bg-emerald-50/60 border border-emerald-900/15 text-emerald-800 px-4 py-3 rounded-xl outline-none focus:border-emerald-600 transition-all text-sm resize-none placeholder:text-emerald-700/40">
+            </textarea>
+          </div>
+        </div>
+      }
+
+      <!-- Navegación -->
+      <div class="flex gap-3 mt-10">
+        @if (paso > 1) {
+          <button (click)="anteriorPaso()"
+                  class="flex-1 border border-emerald-900/15 text-emerald-700/60 hover:text-emerald-700 hover:border-emerald-600/40 py-3 font-mono text-xs uppercase tracking-widest transition-all cursor-pointer">
+            ← Anterior
+          </button>
+        }
+        @if (paso < 4) {
+          <button (click)="siguientePaso()"
+                  class="flex-1 bg-emerald-600 text-white py-3 font-mono text-xs uppercase tracking-widest hover:bg-emerald-700 transition-all cursor-pointer">
+            Siguiente →
+          </button>
+        }
+        @if (paso === 4) {
+          <button (click)="confirmar()" [disabled]="enviando"
+                  class="flex-1 py-3 font-mono text-xs uppercase tracking-widest transition-all cursor-pointer flex items-center justify-center gap-2"
+                  [ngClass]="enviando ? 'bg-emerald-100 text-emerald-700/40 cursor-not-allowed' : 'bg-emerald-600 text-white hover:bg-emerald-700'">
+            @if (enviando) { <i class="pi pi-spin pi-spinner text-xs"></i> }
+            {{ enviando ? 'Agendando...' : 'Confirmar Cita' }}
+          </button>
+        }
+      </div>
+    }
+
+  </div>
+</div>

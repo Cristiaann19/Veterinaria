@@ -1,0 +1,159 @@
+<app-navbar-component></app-navbar-component>
+
+<main class="min-h-screen bg-white text-gray-900 pt-32 pb-16 px-6">
+  <div class="max-w-7xl mx-auto">
+
+    <!-- HEADER -->
+    <div class="mb-10">
+      <span class="!font-mono text-xs uppercase tracking-[0.3em] text-gray-500 mb-4 block">Tienda</span>
+      <h1 class="text-4xl md:text-6xl !font-display font-bold mb-4">Nuestros Productos</h1>
+
+      <div class="relative max-w-md">
+        <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-gray-400">search</span>
+        <input
+          type="text"
+          [(ngModel)]="terminoBusqueda"
+          (ngModelChange)="onBusquedaChange()"
+          placeholder="Buscar producto..."
+          class="w-full pl-12 pr-4 py-3 rounded-full border border-gray-200 focus:border-gray-900 focus:ring-4 focus:ring-gray-900/5 transition-all outline-none bg-gray-50 placeholder:text-gray-400"
+        />
+      </div>
+    </div>
+
+    <div class="flex flex-col lg:flex-row gap-8">
+
+      <!-- SIDEBAR: FILTROS DE CATEGORÍA -->
+      <aside class="w-full lg:w-72 flex-shrink-0">
+        <div class="bg-white rounded-2xl border border-gray-200 p-6 lg:sticky lg:top-32">
+          <h3 class="text-[10px] uppercase tracking-widest text-gray-500 mb-4">Categorías</h3>
+
+          <ul class="space-y-1">
+            <li>
+              <button
+                (click)="seleccionarCategoria('')"
+                class="w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-sm transition-colors cursor-pointer"
+                [ngClass]="categoriaSeleccionada === ''
+                  ? 'bg-emerald-100 text-emerald-700 font-semibold'
+                  : 'text-gray-700 hover:bg-gray-50'"
+              >
+                <span class="flex items-center gap-2">
+                  <span class="material-symbols-outlined text-base">apps</span>
+                  Todas
+                </span>
+                <span class="text-xs text-gray-400">{{ productos.length }}</span>
+              </button>
+            </li>
+
+            @for (cat of categorias; track cat.nombre) {
+              <li>
+                <button
+                  (click)="seleccionarCategoria(cat.nombre)"
+                  class="w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-sm transition-colors cursor-pointer"
+                  [ngClass]="categoriaSeleccionada === cat.nombre
+                    ? 'bg-emerald-100 text-emerald-700 font-semibold'
+                    : 'text-gray-700 hover:bg-gray-50'"
+                >
+                  <span class="flex items-center gap-2">
+                    <span class="material-symbols-outlined text-base">sell</span>
+                    {{ cat.nombre }}
+                  </span>
+                  <span class="text-xs text-gray-400">{{ cat.cantidad }}</span>
+                </button>
+              </li>
+            }
+
+            @if (categorias.length === 0) {
+              <li class="px-3 py-3 text-sm text-gray-400">
+                Aún no hay categorías asignadas.
+              </li>
+            }
+          </ul>
+        </div>
+      </aside>
+
+      <!-- CATÁLOGO -->
+      <div class="flex-1 min-w-0">
+
+        @if (cargando) {
+          <div class="flex items-center justify-center py-32">
+            <span class="material-symbols-outlined text-gray-300 text-5xl animate-spin">autorenew</span>
+          </div>
+        } @else if (productosFiltrados.length === 0) {
+          <div class="text-center py-24">
+            <div class="inline-flex w-20 h-20 bg-gray-100 rounded-full items-center justify-center mb-4">
+              <span class="material-symbols-outlined text-gray-400 text-4xl">search_off</span>
+            </div>
+            <h3 class="text-lg font-bold mb-1">No se encontraron productos</h3>
+            <p class="text-sm text-gray-500">Intenta con otro término o categoría</p>
+          </div>
+        } @else {
+          <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4">
+            @for (producto of productosMostrados; track producto.id) {
+              <div class="group border border-gray-200 hover:bg-gray-50 transition-colors rounded-2xl overflow-hidden flex flex-col">
+                <div class="relative overflow-hidden h-52">
+                  <img
+                    [src]="producto.imagen_url"
+                    [alt]="producto.nombre"
+                    class="w-full h-full object-cover opacity-80 group-hover:opacity-100 group-hover:scale-105 transition-all duration-500"
+                  />
+                  @if (producto.categoria) {
+                    <span class="absolute top-3 left-3 !font-mono text-[10px] uppercase tracking-widest px-2 py-1 bg-white/90 text-gray-700 rounded-full">
+                      {{ producto.categoria }}
+                    </span>
+                  }
+                  <span
+                    class="absolute top-3 right-3 !font-mono text-[10px] uppercase tracking-widest px-2 py-1 rounded-full"
+                    [ngClass]="producto.stock > 0
+                      ? 'text-emerald-700 bg-emerald-100'
+                      : 'text-red-700 bg-red-100'"
+                  >
+                    {{ producto.stock > 0 ? 'En stock' : 'Agotado' }}
+                  </span>
+                </div>
+
+                <div class="p-5 flex flex-col flex-1">
+                  <h3 class="text-lg font-display mb-1.5">{{ producto.nombre }}</h3>
+                  <p class="text-sm text-gray-600 leading-relaxed mb-4 line-clamp-2 flex-1">
+                    {{ producto.descripcion }}
+                  </p>
+
+                  <div class="flex items-center justify-between">
+                    <span class="!font-mono text-sm text-gray-700">S/. {{ producto.precio }}</span>
+
+                    <button
+                      (click)="agregarAlCarrito(producto)"
+                      [disabled]="producto.stock === 0"
+                      class="flex items-center gap-2 px-4 py-2 text-xs font-mono uppercase tracking-widest border rounded-full transition-all cursor-pointer"
+                      [ngClass]="producto.stock > 0
+                        ? 'border-gray-900/20 text-gray-900 hover:bg-gray-900 hover:text-white'
+                        : 'border-gray-100 text-gray-300 cursor-not-allowed'"
+                    >
+                      <span class="material-symbols-outlined text-sm">add_shopping_cart</span>
+                      Agregar
+                    </button>
+                  </div>
+                </div>
+              </div>
+            }
+          </div>
+
+          <!-- PAGINACIÓN -->
+          <div class="mt-8">
+            <p-paginator
+              (onPageChange)="onPageChange($event)"
+              [first]="first"
+              [rows]="rows"
+              [totalRecords]="productosFiltrados.length"
+              [rowsPerPageOptions]="[8, 12, 16]"
+            >
+            </p-paginator>
+          </div>
+        }
+      </div>
+    </div>
+  </div>
+</main>
+
+<app-carrito></app-carrito>
+
+<app-footer-section></app-footer-section>

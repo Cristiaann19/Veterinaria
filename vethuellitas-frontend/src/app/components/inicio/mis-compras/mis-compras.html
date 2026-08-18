@@ -1,0 +1,133 @@
+<div class="min-h-screen bg-white text-emerald-700 px-6 py-24">
+  <div class="max-w-3xl mx-auto">
+
+    <a routerLink="/inicio"
+       class="inline-flex items-center gap-2 !font-mono text-xs uppercase tracking-widest text-[#888C94] hover:text-emerald-700 transition-colors mb-12 group cursor-pointer">
+      <i class="pi pi-arrow-left group-hover:-translate-x-1 transition-transform"></i>
+      Regresar
+    </a>
+
+    <!-- Header -->
+    <div class="mb-16">
+      <span class="!font-mono text-xs uppercase tracking-[0.3em] text-[#888C94] mb-4 block">
+        Mi cuenta
+      </span>
+      <h2 class="text-5xl md:text-6xl font-bold text-black mb-3">
+        Mis Compras
+      </h2>
+      <p class="text-[#888C94] text-sm !font-mono">Historial de todos tus pedidos</p>
+    </div>
+
+    <!-- Resumen rápido -->
+    @if (ventas.length > 0) {
+      <div class="grid grid-cols-2 gap-1 mb-16">
+        <div class="border border-emerald-900/10 p-8">
+          <p class="!font-mono text-[10px] uppercase tracking-[0.3em] text-[#888C94] mb-3">Total pedidos</p>
+          <p class="text-5xl font-black text-black">{{ ventas.length }}</p>
+        </div>
+        <div class="border border-emerald-900/10 p-8">
+          <p class="!font-mono text-[10px] uppercase tracking-[0.3em] text-[#888C94] mb-3">Total gastado</p>
+          <p class="text-5xl font-black text-black">S/ {{ totalGastado | number:'1.2-2' }}</p>
+        </div>
+      </div>
+    }
+
+    <!-- Loading -->
+    @if (cargando) {
+      <div class="flex flex-col items-center py-32 gap-4">
+        <i class="pi pi-spin pi-spinner text-4xl text-emerald-600/50"></i>
+        <p class="font-mono text-xs text-emerald-700/50 uppercase tracking-widest">Cargando...</p>
+      </div>
+    }
+
+    <!-- Sin compras -->
+    @if (!cargando && ventas.length === 0) {
+      <div class="flex flex-col items-center py-32 gap-6 text-center border border-emerald-900/10">
+        <span class="material-symbols-outlined text-emerald-600/30" style="font-size: 80px">shopping_bag</span>
+        <div>
+          <h3 class="text-xl font-bold text-emerald-700/70 mb-2">Aún no tienes compras</h3>
+          <p class="!font-mono text-xs text-emerald-700/50 uppercase tracking-widest">
+            Explora nuestros productos
+          </p>
+        </div>
+        <a routerLink="/inicio"
+           class="mt-4 border border-emerald-600/40 text-emerald-700 text-xs font-mono uppercase tracking-widest px-8 py-3 hover:bg-emerald-600 hover:text-white transition-all">
+          Ver productos
+        </a>
+      </div>
+    }
+
+    <!-- Lista de ventas -->
+    @if (!cargando) {
+      <div class="flex flex-col gap-1">
+        @for (venta of ventas; track venta.id) {
+          <div class="border border-emerald-900/10 hover:border-emerald-600/30 transition-colors overflow-hidden">
+
+            <!-- Cabecera -->
+            <div class="flex items-center justify-between px-6 py-5 cursor-pointer hover:bg-emerald-50 transition-colors"
+                 (click)="toggleDetalle(venta.id)">
+              <div class="flex items-center gap-5">
+                <span class="!font-mono text-xs text-[#888C94]">
+                  #{{ venta.id.toString().padStart(4, '0') }}
+                </span>
+                <div>
+                  <p class="font-semibold text-gray-700 text-sm">Pedido {{ venta.id }}</p>
+                  <p class="!font-mono text-[10px] text-gray-700 mt-0.5">
+                    {{ venta.fecha | date:'dd/MM/yyyy — HH:mm' }}
+                  </p>
+                </div>
+              </div>
+
+              <div class="flex items-center gap-6">
+                <div class="text-right">
+                  <p class="font-black text-gray-700">S/ {{ venta.total | number:'1.2-2' }}</p>
+                  <span class="!font-mono text-[10px] uppercase tracking-widest"
+                        [ngClass]="{
+                          'text-emerald-600': venta.estado === 'COMPLETADA',
+                          'text-yellow-600': venta.estado === 'PENDIENTE',
+                          'text-red-600': venta.estado === 'CANCELADA'
+                        }">
+                    {{ venta.estado }}
+                  </span>
+                </div>
+                <i class="pi text-emerald-700/30 text-xs"
+                   [class.pi-chevron-down]="ventaExpandida !== venta.id"
+                   [class.pi-chevron-up]="ventaExpandida === venta.id"></i>
+              </div>
+            </div>
+
+            <!-- Detalle expandido -->
+            @if (ventaExpandida === venta.id) {
+              <div class="border-t border-emerald-900/10 px-6 py-5 bg-emerald-50/40">
+                <p class="!font-mono text-[10px] uppercase tracking-[0.3em] text-[#888C94] mb-4">
+                  Productos
+                </p>
+                <div class="flex flex-col">
+                  @for (det of venta.detalles; track det.id) {
+                    <div class="flex items-center justify-between py-3 border-b border-emerald-900/10 last:border-0">
+                      <div>
+                        <p class="text-sm text-gray-700">{{ det.nombreProducto }}</p>
+                        <p class="!font-mono text-[10px] text-gray-700 mt-0.5">
+                          {{ det.cantidad }} × S/ {{ det.precioUnitario | number:'1.2-2' }}
+                        </p>
+                      </div>
+                      <p class="!font-mono text-sm text-gray-700">
+                        S/ {{ det.subtotal | number:'1.2-2' }}
+                      </p>
+                    </div>
+                  }
+                </div>
+                <div class="flex justify-between mt-4 pt-4 border-t border-emerald-900/20">
+                  <span class="!font-mono text-xs text-[#888C94] uppercase tracking-widest">Total</span>
+                  <span class="!font-black text-gray-700 text-lg">S/ {{ venta.total | number:'1.2-2' }}</span>
+                </div>
+              </div>
+            }
+
+          </div>
+        }
+      </div>
+    }
+
+  </div>
+</div>
