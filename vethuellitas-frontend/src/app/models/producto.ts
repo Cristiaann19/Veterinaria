@@ -5,5 +5,11 @@ export interface Producto {
     stock: number;
     descripcion: string;
     imagen_url: string;
-    categoria?: string;
+    categorias?: Categoria[];
+}
+
+export interface Categoria {
+    id: number;
+    nombre: string;
+    descripcion?: string;
 }

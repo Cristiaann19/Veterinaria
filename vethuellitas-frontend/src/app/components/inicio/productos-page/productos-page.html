@@ -96,9 +96,9 @@
                     [alt]="producto.nombre"
                     class="w-full h-full object-cover opacity-80 group-hover:opacity-100 group-hover:scale-105 transition-all duration-500"
                   />
-                  @if (producto.categoria) {
+                  @if (producto.categorias?.length) {
                     <span class="absolute top-3 left-3 !font-mono text-[10px] uppercase tracking-widest px-2 py-1 bg-white/90 text-gray-700 rounded-full">
-                      {{ producto.categoria }}
+                      {{ producto.categorias![0].nombre }}
                     </span>
                   }
                   <span

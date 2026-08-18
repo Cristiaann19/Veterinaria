@@ -62,8 +62,10 @@ export class ProductosPage implements OnInit {
   get categorias(): { nombre: string; cantidad: number }[] {
     const conteo = new Map<string, number>();
     for (const p of this.productos) {
-      if (p.categoria?.trim()) {
-        conteo.set(p.categoria, (conteo.get(p.categoria) ?? 0) + 1);
+      for (const cat of p.categorias ?? []) {
+        if (cat.nombre?.trim()) {
+          conteo.set(cat.nombre, (conteo.get(cat.nombre) ?? 0) + 1);
+        }
       }
     }
     return [...conteo.entries()]
@@ -75,7 +77,8 @@ export class ProductosPage implements OnInit {
     const t = this.terminoBusqueda.trim().toLowerCase();
     return this.productos.filter(p => {
       const coincideTexto = !t || p.nombre.toLowerCase().includes(t);
-      const coincideCategoria = !this.categoriaSeleccionada || p.categoria === this.categoriaSeleccionada;
+      const coincideCategoria =
+        !this.categoriaSeleccionada || (p.categorias ?? []).some(c => c.nombre === this.categoriaSeleccionada);
       return coincideTexto && coincideCategoria;
     });
   }
