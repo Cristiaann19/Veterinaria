@@ -31,6 +31,7 @@ export class ProductosPage implements OnInit {
   rows = 8;
 
   cargando = true;
+  error = false;
 
   constructor(
     private productoService: ProductoService,
@@ -44,6 +45,8 @@ export class ProductosPage implements OnInit {
   }
 
   cargarProductos(): void {
+    this.cargando = true;
+    this.error = false;
     this.productoService.listarProductos().subscribe({
       next: (data) => {
         Promise.resolve().then(() => {
@@ -54,9 +57,14 @@ export class ProductosPage implements OnInit {
       },
       error: () => {
         this.cargando = false;
+        this.error = true;
         this.cdr.markForCheck();
       }
     });
+  }
+
+  reintentar(): void {
+    this.cargarProductos();
   }
 
   get categorias(): { nombre: string; cantidad: number }[] {

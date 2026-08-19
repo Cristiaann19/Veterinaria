@@ -12,6 +12,8 @@ import { ServiciosService} from '../../../../services/servicios';
 export class ServicesSection implements OnInit {
   servicios: Servicio[] = [];
   serviciosMostrados: Servicio[] = [];
+  cargando = true;
+  error = false;
 
   constructor(private servicioService: ServiciosService, private cdr: ChangeDetectorRef) {}
 
@@ -20,13 +22,24 @@ export class ServicesSection implements OnInit {
   }
 
   cargarServicios(): void {
+    this.cargando = true;
+    this.error = false;
     this.servicioService.listarActivos().subscribe({
       next: (data) => {
         this.servicios = data;
         this.serviciosMostrados = data;
+        this.cargando = false;
         this.cdr.markForCheck();
       },
-      error: (err) => console.error('Error: ', err)
+      error: () => {
+        this.cargando = false;
+        this.error = true;
+        this.cdr.markForCheck();
+      }
     });
+  }
+
+  reintentar(): void {
+    this.cargarServicios();
   }
 }

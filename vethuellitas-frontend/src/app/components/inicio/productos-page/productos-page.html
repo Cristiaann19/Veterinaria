@@ -75,8 +75,33 @@
       <div class="flex-1 min-w-0">
 
         @if (cargando) {
-          <div class="flex items-center justify-center py-32">
-            <span class="material-symbols-outlined text-gray-300 text-5xl animate-spin">autorenew</span>
+          <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4">
+            @for (i of [0,1,2,3,4,5]; track i) {
+              <div class="border border-gray-200 rounded-2xl overflow-hidden flex flex-col">
+                <div class="h-52 bg-gray-200 animate-pulse"></div>
+                <div class="p-5 flex flex-col gap-3 flex-1">
+                  <div class="h-5 w-2/3 bg-gray-200 rounded animate-pulse"></div>
+                  <div class="h-3 w-full bg-gray-200 rounded animate-pulse"></div>
+                  <div class="h-3 w-1/2 bg-gray-200 rounded animate-pulse"></div>
+                  <div class="flex items-center justify-between pt-2">
+                    <div class="h-4 w-16 bg-gray-200 rounded animate-pulse"></div>
+                    <div class="h-9 w-24 rounded-full bg-gray-200 animate-pulse"></div>
+                  </div>
+                </div>
+              </div>
+            }
+          </div>
+        } @else if (error) {
+          <div class="flex flex-col items-center justify-center py-24 text-center">
+            <span class="material-symbols-outlined text-4xl text-gray-400 mb-4">cloud_off</span>
+            <h3 class="text-lg font-bold mb-1">No pudimos cargar los productos</h3>
+            <p class="text-sm text-gray-500 mb-6">Verifica tu conexión e inténtalo nuevamente</p>
+            <button
+              (click)="reintentar()"
+              class="px-6 py-3 text-xs font-mono uppercase tracking-widest border border-gray-900/20 text-gray-900 hover:bg-gray-900 hover:text-white transition-all cursor-pointer"
+            >
+              Reintentar
+            </button>
           </div>
         } @else if (productosFiltrados.length === 0) {
           <div class="text-center py-24">
