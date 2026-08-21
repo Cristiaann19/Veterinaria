@@ -1,5 +1,5 @@
 // components/inicio/mis-mascotas/mis-mascotas.ts
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
@@ -15,6 +15,8 @@ import { GToast } from '../../../services/gtoast';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MisMascotas implements OnInit {
+  @Input() embedded = false;
+
   mascotas: Mascota[] = [];
   cargando = true;
   displayNew = false;

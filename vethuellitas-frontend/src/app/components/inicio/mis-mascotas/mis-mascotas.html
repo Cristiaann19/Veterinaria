@@ -1,6 +1,9 @@
-<div class="min-h-screen bg-white text-emerald-700 px-6 py-24">
+<div class="text-emerald-700 px-6 py-24"
+     [class.min-h-screen]="!embedded"
+     [class.bg-white]="!embedded">
   <div class="max-w-3xl mx-auto">
 
+    @if (!embedded) {
     <!-- Botón regresar -->
     <a routerLink="/inicio"
        class="inline-flex items-center gap-2 font-mono text-xs uppercase tracking-widest text-[#888C94] hover:text-emerald-700 transition-colors mb-12 group cursor-pointer">
@@ -20,6 +23,7 @@
         + Agregar mascota
       </button>
     </div>
+    }
 
     <!-- Loading -->
     @if (cargando) {

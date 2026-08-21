@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { VentaService } from '../../../services/venta-service';
 import { Venta } from '../../../models/carrito';
@@ -12,6 +12,8 @@ import {RouterLink} from '@angular/router';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MisCompras implements OnInit {
+  @Input() embedded = false;
+
   ventas: Venta[] = [];
   ventaExpandida: number | null = null;
   cargando = true;

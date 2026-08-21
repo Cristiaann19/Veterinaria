@@ -25,4 +25,8 @@ export class ClienteService {
   eliminarCliente(id: number): Observable<void> {
     return this.http.delete<void>(`${this.url}/${id}`);
   }
+
+  obtenerPorId(id: number): Observable<Cliente> {
+    return this.http.get<Cliente>(`${this.url}/${id}`);
+  }
 }

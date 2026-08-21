@@ -1,5 +1,5 @@
 // components/inicio/mis-citas/mis-citas.ts
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { CitasService } from '../../../services/citas-service';
@@ -14,6 +14,8 @@ import { GToast } from '../../../services/gtoast';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MisCitas implements OnInit {
+  @Input() embedded = false;
+
   citas: Cita[] = [];
   cargando = true;
   filtroEstado = '';

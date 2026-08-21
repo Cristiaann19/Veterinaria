@@ -21,6 +21,7 @@ import {AgendarCita} from './components/inicio/agendar-cita/agendar-cita';
 import {MisCitas} from './components/inicio/mis-citas/mis-citas';
 import {MisMascotas} from './components/inicio/mis-mascotas/mis-mascotas';
 import {ProductosPage} from './components/inicio/productos-page/productos-page';
+import {PerfilPage} from './components/inicio/perfil-page/perfil-page';
 
 
 export const routes: Routes = [
@@ -40,6 +41,7 @@ export const routes: Routes = [
   { path: 'agendar-cita', component: AgendarCita, canActivate: [clienteGuard] },
   { path: 'mis-citas',    component: MisCitas,    canActivate: [clienteGuard] },
   { path: 'mis-mascotas', component: MisMascotas, canActivate: [clienteGuard] },
+  { path: 'mi-perfil', component: PerfilPage, canActivate: [clienteGuard], data: { title: 'Mi Perfil' } },
 
   {
     path: 'admin',
