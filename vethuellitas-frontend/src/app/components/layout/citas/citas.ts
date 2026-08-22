@@ -23,6 +23,7 @@ export class Citas implements OnInit {
   filtroEstado = '';
   citaDetalle: Cita | null = null;
   displayDetalle = false;
+  esVet = false;
 
   readonly estados = ['PENDIENTE', 'CONFIRMADA', 'REALIZADA', 'CANCELADA'];
 
@@ -33,11 +34,16 @@ export class Citas implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.esVet = localStorage.getItem('rol') === 'ROLE_VET';
     this.listarCitas();
   }
 
   listarCitas(): void {
-    this.citaService.listarCitas().subscribe({
+    const request$ = this.esVet
+      ? this.citaService.listarPorTrabajador(Number(localStorage.getItem('trabajadorId')))
+      : this.citaService.listarCitas();
+
+    request$.subscribe({
       next: (data) => {
         Promise.resolve().then(() => {
           this.citas = data.sort((a, b) =>

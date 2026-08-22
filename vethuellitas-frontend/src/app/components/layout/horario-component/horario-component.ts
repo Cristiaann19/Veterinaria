@@ -29,6 +29,7 @@ export class HorarioComponent implements OnInit {
 
   terminoBusqueda = '';
   filtroTrabajador = '';
+  esVet = false;
 
   // Modal
   displayModal = false;
@@ -49,7 +50,34 @@ export class HorarioComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.cargarTrabajadores();
+    this.esVet = localStorage.getItem('rol') === 'ROLE_VET';
+    if (this.esVet) {
+      this.cargarMiHorario();
+    } else {
+      this.cargarTrabajadores();
+    }
+  }
+
+  cargarMiHorario(): void {
+    const trabajadorId = Number(localStorage.getItem('trabajadorId'));
+    if (!trabajadorId) return;
+
+    this.http.get<Trabajador>(`http://localhost:8080/api/trabajadores/${trabajadorId}`).subscribe({
+      next: (trabajador) => {
+        Promise.resolve().then(() => {
+          this.trabajadores = [trabajador];
+          this.trabajadoresFiltrados = [trabajador];
+          this.horarioService.porTrabajador(trabajadorId).subscribe({
+            next: (horarios) => {
+              this.horariosPorTrabajador.set(trabajadorId, horarios);
+              this.cdr.markForCheck();
+            },
+            error: (err) => console.error(err),
+          });
+        });
+      },
+      error: (err) => console.error(err),
+    });
   }
 
   cargarTrabajadores(): void {

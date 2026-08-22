@@ -176,6 +176,32 @@ public class CitaService {
                 .stream().map(this::toDTO).collect(Collectors.toList());
     }
 
+    public List<CitaDTO> listarPorTrabajador(Long trabajadorId) {
+        return citaRepository.findByTrabajadorId(trabajadorId)
+                .stream().map(this::toDTO).collect(Collectors.toList());
+    }
+
+    public DashboardDTO getDashboardPorTrabajador(Long trabajadorId) {
+        LocalDate hoy = LocalDate.now();
+        LocalDateTime inicioHoy = hoy.atStartOfDay();
+        LocalDateTime finHoy = hoy.atTime(23, 59, 59);
+
+        DashboardDTO dto = new DashboardDTO();
+
+        List<Cita> citasHoyTrabajador = citaRepository
+                .findByTrabajadorIdAndFechaHoraBetween(trabajadorId, inicioHoy, finHoy);
+        dto.setCitasHoy(citasHoyTrabajador.size());
+        dto.setCitasDeHoy(citasHoyTrabajador.stream()
+                .map(this::toDTO)
+                .collect(Collectors.toList()));
+
+        dto.setClientesActivos(0);
+        dto.setTotalMascotas(0);
+        dto.setVentasMes(0);
+
+        return dto;
+    }
+
     public CitaDTO cancelarCita(Long id) {
         Cita cita = citaRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Cita no encontrada"));

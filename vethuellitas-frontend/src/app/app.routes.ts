@@ -1,4 +1,4 @@
-import { Routes } from '@angular/router';
+﻿import { Routes } from '@angular/router';
 import { Layout } from './components/layout/layout';
 import { Login } from './components/login/login';
 import { Dashboard } from './components/layout/dashboard/dashboard';
@@ -22,10 +22,11 @@ import {MisCitas} from './components/inicio/mis-citas/mis-citas';
 import {MisMascotas} from './components/inicio/mis-mascotas/mis-mascotas';
 import {ProductosPage} from './components/inicio/productos-page/productos-page';
 import {PerfilPage} from './components/inicio/perfil-page/perfil-page';
+import {roleGuard} from './services/role.guard';
 
 
 export const routes: Routes = [
-  { path: 'login', component: Login, data: { title: 'Iniciar Sesión' } },
+  { path: 'login', component: Login, data: { title: 'Iniciar Sesion' } },
   { path: 'ver-productos', component: ProductosPage, data: { title: 'Huellitas - Productos' } },
   {
     path: 'inicio',
@@ -49,17 +50,17 @@ export const routes: Routes = [
     canActivate: [authGuard],
     children: [
       { path: 'dashboard', component: Dashboard, data: { title: 'Dashboard' } },
-      { path: 'clientes', component: Clientes, data: { title: 'Clientes' } },
-      { path: 'mascotas', component: Mascotas, data: { title: 'Mascotas' } },
-      { path: 'vacunas', component: Vacunas, data: { title: 'Vacunas' } },
-      { path: 'pagos', component: PagosComponent, data: { title: 'Pagos' } },
-      { path: 'horarios', component: HorarioComponent, data: { title: 'Horarios' } },
-      { path: 'enfermedades', component: Enfermedades, data: { title: 'Enfermedades' } },
-      { path: 'trabajadores', component: Trabajadores, data: { title: 'Trabajadores' } },
-      { path: 'productos', component: Productos, data: { title: 'Productos' } },
-      { path: 'ventas', component: Ventas, data: { title: 'Ventas' } },
       { path: 'citas', component: Citas, data: { title: 'Citas' } },
-      { path: 'servicios', component: Servicios, data: { title: 'Servicios' } },
+      { path: 'horarios', component: HorarioComponent, data: { title: 'Horarios' } },
+      { path: 'clientes', component: Clientes, data: { title: 'Clientes', roles: ['ROLE_ADMIN'] } },
+      { path: 'mascotas', component: Mascotas, data: { title: 'Mascotas', roles: ['ROLE_ADMIN'] } },
+      { path: 'vacunas', component: Vacunas, data: { title: 'Vacunas', roles: ['ROLE_ADMIN'] } },
+      { path: 'pagos', component: PagosComponent, data: { title: 'Pagos', roles: ['ROLE_ADMIN'] } },
+      { path: 'enfermedades', component: Enfermedades, data: { title: 'Enfermedades', roles: ['ROLE_ADMIN'] } },
+      { path: 'trabajadores', component: Trabajadores, data: { title: 'Trabajadores', roles: ['ROLE_ADMIN'] } },
+      { path: 'productos', component: Productos, data: { title: 'Productos', roles: ['ROLE_ADMIN'] } },
+      { path: 'ventas', component: Ventas, data: { title: 'Ventas', roles: ['ROLE_ADMIN'] } },
+      { path: 'servicios', component: Servicios, data: { title: 'Servicios', roles: ['ROLE_ADMIN'] } },
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' }
     ]
   },

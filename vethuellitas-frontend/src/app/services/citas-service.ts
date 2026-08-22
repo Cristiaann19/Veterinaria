@@ -39,4 +39,12 @@ export class CitasService {
   mascotasPorCliente(clienteId: number): Observable<Mascota[]> {
     return this.http.get<Mascota[]>(`${this.url}/mascotas/cliente/${clienteId}`);
   }
+
+  listarPorTrabajador(trabajadorId: number): Observable<Cita[]> {
+    return this.http.get<Cita[]>(`${this.url}/trabajador/${trabajadorId}`);
+  }
+
+  dashboardPorTrabajador(trabajadorId: number): Observable<any> {
+    return this.http.get<any>(`${this.url}/dashboard/trabajador/${trabajadorId}`);
+  }
 }

@@ -20,6 +20,11 @@ public class TrabajadorController {
         return trabajadorService.listarTodos();
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<Trabajador> obtenerPorId(@PathVariable Long id) {
+        return ResponseEntity.ok(trabajadorService.buscarPorId(id));
+    }
+
     @PostMapping
     public ResponseEntity<Trabajador> crear(@RequestBody TrabajadorRequestDTO dto) {
         Trabajador nuevo = trabajadorService.crear(dto);

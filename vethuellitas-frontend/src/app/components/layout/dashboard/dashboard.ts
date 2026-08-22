@@ -1,7 +1,8 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
+﻿import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { RouterLink } from '@angular/router';
+import { AuthService } from '../../../services/auth.service';
 
 interface CitaHoy {
   id: number;
@@ -26,7 +27,7 @@ interface DashboardData {
   standalone: true,
   imports: [CommonModule, RouterLink],
   templateUrl: './dashboard.html',
-  changeDetection: ChangeDetectionStrategy.OnPush, // ✅
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class Dashboard implements OnInit {
 
@@ -39,21 +40,33 @@ export class Dashboard implements OnInit {
   };
 
   cargando = true;
+  esAdmin = false;
+  trabajadorId: number | null = null;
 
-  constructor(private http: HttpClient, private cdr: ChangeDetectorRef) {}
+  constructor(
+    private http: HttpClient,
+    private cdr: ChangeDetectorRef,
+    private authService: AuthService
+  ) {}
 
   ngOnInit(): void {
+    this.esAdmin = this.authService.getRol() === 'ROLE_ADMIN';
+    this.trabajadorId = Number(localStorage.getItem('trabajadorId')) || null;
     this.cargarDashboard();
   }
 
   cargarDashboard(): void {
-    this.http.get<DashboardData>('http://localhost:8080/api/citas/dashboard')
+    const url = this.esAdmin
+      ? 'http://localhost:8080/api/citas/dashboard'
+      : `http://localhost:8080/api/citas/dashboard/trabajador/${this.trabajadorId}`;
+
+    this.http.get<DashboardData>(url)
       .subscribe({
         next: (data) => {
-          Promise.resolve().then(() => {   // ✅ evita NG0100
+          Promise.resolve().then(() => {
             this.data = { ...data };
             this.cargando = false;
-            this.cdr.markForCheck();       // ✅
+            this.cdr.markForCheck();
           });
         },
         error: (err) => {
@@ -80,7 +93,6 @@ export class Dashboard implements OnInit {
     });
   }
 
-  // % de citas por estado para el resumen
   get citasPorEstado(): { label: string; count: number; color: string }[] {
     const estados = ['PENDIENTE', 'CONFIRMADA', 'REALIZADA', 'CANCELADA'];
     const colores: Record<string, string> = {

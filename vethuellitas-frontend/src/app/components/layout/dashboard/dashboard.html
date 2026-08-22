@@ -1,4 +1,4 @@
-<!-- Loading -->
+﻿<!-- Loading -->
 @if (cargando) {
   <div class="flex flex-col items-center py-32 gap-3">
     <i class="pi pi-spin pi-spinner text-4xl text-[#0D72C5]"></i>
@@ -8,179 +8,307 @@
 
 @if (!cargando) {
 
-  <!-- ── TARJETAS SUPERIORES ── -->
-  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+  @if (esAdmin) {
 
-    <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow">
-      <div class="flex items-center justify-between mb-2">
-        <div>
-          <p class="text-sm text-gray-600 font-medium">Citas Hoy</p>
-          <h3 class="text-3xl font-bold text-gray-800 mt-1">{{ data.citasHoy }}</h3>
-        </div>
-        <div class="w-14 h-14 rounded-xl bg-cyan-500 flex items-center justify-center">
-          <span class="material-symbols-outlined text-white text-3xl">calendar_today</span>
-        </div>
-      </div>
-    </div>
+    <!-- ── TARJETAS SUPERIORES ── -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
 
-    <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow">
-      <div class="flex items-center justify-between mb-2">
-        <div>
-          <p class="text-sm text-gray-600 font-medium">Clientes Activos</p>
-          <h3 class="text-3xl font-bold text-gray-800 mt-1">{{ data.clientesActivos }}</h3>
-        </div>
-        <div class="w-14 h-14 rounded-xl bg-blue-500 flex items-center justify-center">
-          <span class="material-symbols-outlined text-white text-3xl">group</span>
-        </div>
-      </div>
-    </div>
-
-    <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow">
-      <div class="flex items-center justify-between mb-2">
-        <div>
-          <p class="text-sm text-gray-600 font-medium">Ventas del Mes</p>
-          <h3 class="text-3xl font-bold text-emerald-600 mt-1">
-            S/ {{ data.ventasMes | number:'1.2-2' }}
-          </h3>
-        </div>
-        <div class="w-14 h-14 rounded-xl bg-[#0D72C5] flex items-center justify-center">
-          <span class="material-symbols-outlined text-white text-3xl">payments</span>
-        </div>
-      </div>
-    </div>
-
-    <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow">
-      <div class="flex items-center justify-between mb-2">
-        <div>
-          <p class="text-sm text-gray-600 font-medium">Mascotas</p>
-          <h3 class="text-3xl font-bold text-gray-800 mt-1">{{ data.totalMascotas }}</h3>
-        </div>
-        <div class="w-14 h-14 rounded-xl bg-purple-500 flex items-center justify-center">
-          <span class="material-symbols-outlined text-white text-3xl">pets</span>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- ── CUERPO PRINCIPAL ── -->
-  <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-
-    <!-- Resumen de rendimiento -->
-    <div class="lg:col-span-2 bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-      <h3 class="text-lg font-bold text-gray-800 mb-6">Resumen de Rendimiento</h3>
-
-      <!-- Métricas rápidas -->
-      <div class="grid grid-cols-2 gap-4 mb-6">
-        <div class="bg-blue-50 rounded-xl p-4">
-          <p class="text-xs text-blue-500 font-medium uppercase tracking-wide mb-1">Citas completadas hoy</p>
-          <p class="text-2xl font-black text-blue-700">
-            {{ contarEstado('REALIZADA') }}
-          </p>
-        </div>
-        <div class="bg-yellow-50 rounded-xl p-4">
-          <p class="text-xs text-yellow-600 font-medium uppercase tracking-wide mb-1">Citas pendientes hoy</p>
-          <p class="text-2xl font-black text-yellow-700">
-            {{ contarEstado('PENDIENTE') }}
-          </p>
-        </div>
-      </div>
-
-      <!-- Distribución de estados de hoy -->
-      @if (data.citasDeHoy.length > 0) {
-        <div class="mb-6">
-          <p class="text-xs font-bold text-gray-500 uppercase tracking-wider mb-3">
-            Distribución de citas de hoy
-          </p>
-          <!-- Barra proporcional -->
-          <div class="flex h-4 rounded-full overflow-hidden gap-px mb-3">
-            @for (e of citasPorEstado; track e.label) {
-              <div class="transition-all duration-500 {{ e.color }}"
-                   [style.flex]="e.count"></div>
-            }
+      <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow">
+        <div class="flex items-center justify-between mb-2">
+          <div>
+            <p class="text-sm text-gray-600 font-medium">Citas Hoy</p>
+            <h3 class="text-3xl font-bold text-gray-800 mt-1">{{ data.citasHoy }}</h3>
           </div>
-          <div class="flex gap-4 flex-wrap">
-            @for (e of citasPorEstado; track e.label) {
-              <div class="flex items-center gap-1.5">
-                <div class="w-2.5 h-2.5 rounded-full {{ e.color }}"></div>
-                <span class="text-xs text-gray-600">{{ e.label }}: <strong>{{ e.count }}</strong></span>
-              </div>
-            }
+          <div class="w-14 h-14 rounded-xl bg-cyan-500 flex items-center justify-center">
+            <span class="material-symbols-outlined text-white text-3xl">calendar_today</span>
           </div>
         </div>
-      }
+      </div>
 
-      <!-- Accesos rápidos -->
-      <div>
-        <p class="text-xs font-bold text-gray-500 uppercase tracking-wider mb-3">Accesos rápidos</p>
-        <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
-          <a routerLink="/admin/citas"
-             class="flex flex-col items-center gap-2 p-3 border-2 border-dashed border-gray-200 rounded-xl hover:border-[#0D72C5] hover:bg-blue-50 transition-all group cursor-pointer">
-            <i class="pi pi-calendar text-gray-400 group-hover:text-[#0D72C5] text-xl transition-colors"></i>
-            <span class="text-xs text-gray-500 group-hover:text-[#0D72C5] font-medium transition-colors">Citas</span>
-          </a>
-          <a routerLink="/admin/clientes"
-             class="flex flex-col items-center gap-2 p-3 border-2 border-dashed border-gray-200 rounded-xl hover:border-[#0D72C5] hover:bg-blue-50 transition-all group cursor-pointer">
-            <i class="pi pi-users text-gray-400 group-hover:text-[#0D72C5] text-xl transition-colors"></i>
-            <span class="text-xs text-gray-500 group-hover:text-[#0D72C5] font-medium transition-colors">Clientes</span>
-          </a>
-          <a routerLink="/admin/ventas"
-             class="flex flex-col items-center gap-2 p-3 border-2 border-dashed border-gray-200 rounded-xl hover:border-[#0D72C5] hover:bg-blue-50 transition-all group cursor-pointer">
-            <i class="pi pi-shopping-bag text-gray-400 group-hover:text-[#0D72C5] text-xl transition-colors"></i>
-            <span class="text-xs text-gray-500 group-hover:text-[#0D72C5] font-medium transition-colors">Ventas</span>
-          </a>
-          <a routerLink="/admin/pagos"
-             class="flex flex-col items-center gap-2 p-3 border-2 border-dashed border-gray-200 rounded-xl hover:border-[#0D72C5] hover:bg-blue-50 transition-all group cursor-pointer">
-            <i class="pi pi-chart-bar text-gray-400 group-hover:text-[#0D72C5] text-xl transition-colors"></i>
-            <span class="text-xs text-gray-500 group-hover:text-[#0D72C5] font-medium transition-colors">Finanzas</span>
-          </a>
+      <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow">
+        <div class="flex items-center justify-between mb-2">
+          <div>
+            <p class="text-sm text-gray-600 font-medium">Clientes Activos</p>
+            <h3 class="text-3xl font-bold text-gray-800 mt-1">{{ data.clientesActivos }}</h3>
+          </div>
+          <div class="w-14 h-14 rounded-xl bg-blue-500 flex items-center justify-center">
+            <span class="material-symbols-outlined text-white text-3xl">group</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow">
+        <div class="flex items-center justify-between mb-2">
+          <div>
+            <p class="text-sm text-gray-600 font-medium">Ventas del Mes</p>
+            <h3 class="text-3xl font-bold text-emerald-600 mt-1">
+              S/ {{ data.ventasMes | number:"1.2-2" }}
+            </h3>
+          </div>
+          <div class="w-14 h-14 rounded-xl bg-[#0D72C5] flex items-center justify-center">
+            <span class="material-symbols-outlined text-white text-3xl">payments</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow">
+        <div class="flex items-center justify-between mb-2">
+          <div>
+            <p class="text-sm text-gray-600 font-medium">Mascotas</p>
+            <h3 class="text-3xl font-bold text-gray-800 mt-1">{{ data.totalMascotas }}</h3>
+          </div>
+          <div class="w-14 h-14 rounded-xl bg-purple-500 flex items-center justify-center">
+            <span class="material-symbols-outlined text-white text-3xl">pets</span>
+          </div>
         </div>
       </div>
     </div>
 
-    <!-- Citas de hoy -->
-    <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-      <div class="flex items-center justify-between mb-6">
-        <h3 class="text-lg font-bold text-gray-800">Citas de Hoy</h3>
-        <span class="text-xs bg-blue-50 text-blue-600 font-semibold px-2 py-1 rounded-full">
-          {{ data.citasHoy }} total
-        </span>
-      </div>
+    <!-- ── CUERPO PRINCIPAL ── -->
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
 
-      <div class="space-y-4 max-h-[480px] overflow-y-auto pr-1">
+      <!-- Resumen de rendimiento -->
+      <div class="lg:col-span-2 bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+        <h3 class="text-lg font-bold text-gray-800 mb-6">Resumen de Rendimiento</h3>
+
+        <div class="grid grid-cols-2 gap-4 mb-6">
+          <div class="bg-blue-50 rounded-xl p-4">
+            <p class="text-xs text-blue-500 font-medium uppercase tracking-wide mb-1">Citas completadas hoy</p>
+            <p class="text-2xl font-black text-blue-700">
+              {{ contarEstado('REALIZADA') }}
+            </p>
+          </div>
+          <div class="bg-yellow-50 rounded-xl p-4">
+            <p class="text-xs text-yellow-600 font-medium uppercase tracking-wide mb-1">Citas pendientes hoy</p>
+            <p class="text-2xl font-black text-yellow-700">
+              {{ contarEstado('PENDIENTE') }}
+            </p>
+          </div>
+        </div>
+
         @if (data.citasDeHoy.length > 0) {
-          @for (cita of data.citasDeHoy; track cita.id) {
-            <div class="relative pl-8 pb-5 border-l-2 border-[#0D72C5]/20 last:pb-0 last:border-transparent">
-              <div class="absolute left-[-9px] top-0 w-4 h-4 rounded-full bg-[#0D72C5] border-4 border-white shadow-sm"></div>
-              <div class="bg-gray-50 rounded-xl p-4 hover:bg-blue-50/40 transition-colors">
-                <div class="flex items-start justify-between gap-2 mb-2">
-                  <div>
-                    <p class="font-bold text-gray-800 text-sm">{{ formatHora(cita.fechaHora) }}</p>
-                    <p class="text-sm text-gray-700 font-medium mt-0.5">{{ cita.mascotaNombre }}</p>
-                    <p class="text-xs text-gray-400 mt-0.5">
-                      {{ cita.servicioNombre }} · {{ cita.trabajadorNombre }}
-                    </p>
-                    @if (cita.clienteNombre) {
-                      <p class="text-xs text-gray-400">
-                        <i class="pi pi-user text-xs mr-1"></i>{{ cita.clienteNombre }}
-                      </p>
-                    }
-                  </div>
-                  <span class="px-2 py-0.5 text-xs font-semibold rounded-full flex-shrink-0 {{ getEstadoClass(cita.estado) }}">
-                    {{ cita.estado }}
-                  </span>
-                </div>
-              </div>
+          <div class="mb-6">
+            <p class="text-xs font-bold text-gray-500 uppercase tracking-wider mb-3">
+              Distribucion de citas de hoy
+            </p>
+            <div class="flex h-4 rounded-full overflow-hidden gap-px mb-3">
+              @for (e of citasPorEstado; track e.label) {
+                <div class="transition-all duration-500 {{ e.color }}"
+                     [style.flex]="e.count"></div>
+              }
             </div>
-          }
-        } @else {
-          <div class="text-center py-10 text-gray-400">
-            <span class="material-symbols-outlined text-4xl mb-2 block">event_available</span>
-            <p class="text-sm">No hay citas para hoy</p>
+            <div class="flex gap-4 flex-wrap">
+              @for (e of citasPorEstado; track e.label) {
+                <div class="flex items-center gap-1.5">
+                  <div class="w-2.5 h-2.5 rounded-full {{ e.color }}"></div>
+                  <span class="text-xs text-gray-600">{{ e.label }}: <strong>{{ e.count }}</strong></span>
+                </div>
+              }
+            </div>
           </div>
         }
+
+        <div>
+          <p class="text-xs font-bold text-gray-500 uppercase tracking-wider mb-3">Accesos rapidos</p>
+          <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
+            <a routerLink="/admin/citas"
+               class="flex flex-col items-center gap-2 p-3 border-2 border-dashed border-gray-200 rounded-xl hover:border-[#0D72C5] hover:bg-blue-50 transition-all group cursor-pointer">
+              <i class="pi pi-calendar text-gray-400 group-hover:text-[#0D72C5] text-xl transition-colors"></i>
+              <span class="text-xs text-gray-500 group-hover:text-[#0D72C5] font-medium transition-colors">Citas</span>
+            </a>
+            <a routerLink="/admin/clientes"
+               class="flex flex-col items-center gap-2 p-3 border-2 border-dashed border-gray-200 rounded-xl hover:border-[#0D72C5] hover:bg-blue-50 transition-all group cursor-pointer">
+              <i class="pi pi-users text-gray-400 group-hover:text-[#0D72C5] text-xl transition-colors"></i>
+              <span class="text-xs text-gray-500 group-hover:text-[#0D72C5] font-medium transition-colors">Clientes</span>
+            </a>
+            <a routerLink="/admin/ventas"
+               class="flex flex-col items-center gap-2 p-3 border-2 border-dashed border-gray-200 rounded-xl hover:border-[#0D72C5] hover:bg-blue-50 transition-all group cursor-pointer">
+              <i class="pi pi-shopping-bag text-gray-400 group-hover:text-[#0D72C5] text-xl transition-colors"></i>
+              <span class="text-xs text-gray-500 group-hover:text-[#0D72C5] font-medium transition-colors">Ventas</span>
+            </a>
+            <a routerLink="/admin/pagos"
+               class="flex flex-col items-center gap-2 p-3 border-2 border-dashed border-gray-200 rounded-xl hover:border-[#0D72C5] hover:bg-blue-50 transition-all group cursor-pointer">
+              <i class="pi pi-chart-bar text-gray-400 group-hover:text-[#0D72C5] text-xl transition-colors"></i>
+              <span class="text-xs text-gray-500 group-hover:text-[#0D72C5] font-medium transition-colors">Finanzas</span>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Citas de hoy -->
+      <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+        <div class="flex items-center justify-between mb-6">
+          <h3 class="text-lg font-bold text-gray-800">Citas de Hoy</h3>
+          <span class="text-xs bg-blue-50 text-blue-600 font-semibold px-2 py-1 rounded-full">
+            {{ data.citasHoy }} total
+          </span>
+        </div>
+
+        <div class="space-y-4 max-h-[480px] overflow-y-auto pr-1">
+          @if (data.citasDeHoy.length > 0) {
+            @for (cita of data.citasDeHoy; track cita.id) {
+              <div class="relative pl-8 pb-5 border-l-2 border-[#0D72C5]/20 last:pb-0 last:border-transparent">
+                <div class="absolute left-[-9px] top-0 w-4 h-4 rounded-full bg-[#0D72C5] border-4 border-white shadow-sm"></div>
+                <div class="bg-gray-50 rounded-xl p-4 hover:bg-blue-50/40 transition-colors">
+                  <div class="flex items-start justify-between gap-2 mb-2">
+                    <div>
+                      <p class="font-bold text-gray-800 text-sm">{{ formatHora(cita.fechaHora) }}</p>
+                      <p class="text-sm text-gray-700 font-medium mt-0.5">{{ cita.mascotaNombre }}</p>
+                      <p class="text-xs text-gray-400 mt-0.5">
+                        {{ cita.servicioNombre }} · {{ cita.trabajadorNombre }}
+                      </p>
+                      @if (cita.clienteNombre) {
+                        <p class="text-xs text-gray-400">
+                          <i class="pi pi-user text-xs mr-1"></i>{{ cita.clienteNombre }}
+                        </p>
+                      }
+                    </div>
+                    <span class="px-2 py-0.5 text-xs font-semibold rounded-full flex-shrink-0 {{ getEstadoClass(cita.estado) }}">
+                      {{ cita.estado }}
+                    </span>
+                  </div>
+                </div>
+              </div>
+            }
+          } @else {
+            <div class="text-center py-10 text-gray-400">
+              <span class="material-symbols-outlined text-4xl mb-2 block">event_available</span>
+              <p class="text-sm">No hay citas para hoy</p>
+            </div>
+          }
+        </div>
+      </div>
+
+    </div>
+
+  } @else {
+
+    <!-- ═══════════════════════════════════════════════════════════ -->
+    <!-- VISTA TRABAJADOR                                          -->
+    <!-- ═══════════════════════════════════════════════════════════ -->
+
+    <!-- Encabezado -->
+    <div class="mb-8">
+      <h1 class="text-2xl font-bold text-gray-800">Mis Citas de Hoy</h1>
+      <p class="text-sm text-gray-500 mt-1">Resumen personal de tu jornada</p>
+    </div>
+
+    <!-- ── TARJETAS RESUMEN ── -->
+    <div class="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-8">
+
+      <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow">
+        <div class="flex items-center justify-between mb-2">
+          <div>
+            <p class="text-sm text-gray-600 font-medium">Citas Hoy</p>
+            <h3 class="text-3xl font-bold text-gray-800 mt-1">{{ data.citasHoy }}</h3>
+          </div>
+          <div class="w-14 h-14 rounded-xl bg-cyan-500 flex items-center justify-center">
+            <span class="material-symbols-outlined text-white text-3xl">calendar_today</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow">
+        <div class="flex items-center justify-between mb-2">
+          <div>
+            <p class="text-sm text-gray-600 font-medium">Completadas</p>
+            <h3 class="text-3xl font-bold text-green-600 mt-1">{{ contarEstado('REALIZADA') }}</h3>
+          </div>
+          <div class="w-14 h-14 rounded-xl bg-green-500 flex items-center justify-center">
+            <span class="material-symbols-outlined text-white text-3xl">check_circle</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow">
+        <div class="flex items-center justify-between mb-2">
+          <div>
+            <p class="text-sm text-gray-600 font-medium">Pendientes</p>
+            <h3 class="text-3xl font-bold text-yellow-600 mt-1">{{ contarEstado('PENDIENTE') }}</h3>
+          </div>
+          <div class="w-14 h-14 rounded-xl bg-yellow-500 flex items-center justify-center">
+            <span class="material-symbols-outlined text-white text-3xl">schedule</span>
+          </div>
+        </div>
       </div>
     </div>
 
-  </div>
+    <!-- ── CUERPO ── -->
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
 
+      <!-- Lista de citas personales -->
+      <div class="lg:col-span-2 bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+        <div class="flex items-center justify-between mb-6">
+          <h3 class="text-lg font-bold text-gray-800">Agenda del dia</h3>
+          <span class="text-xs bg-cyan-50 text-cyan-600 font-semibold px-2 py-1 rounded-full">
+            {{ data.citasHoy }} citas
+          </span>
+        </div>
+
+        <div class="space-y-3 max-h-[520px] overflow-y-auto pr-1">
+          @if (data.citasDeHoy.length > 0) {
+            @for (cita of data.citasDeHoy; track cita.id) {
+              <div class="flex items-center gap-4 p-4 bg-gray-50 rounded-xl hover:bg-blue-50/40 transition-colors">
+                <div class="flex-shrink-0 w-10 h-10 rounded-lg bg-cyan-500 flex items-center justify-center">
+                  <i class="pi pi-clock text-white text-sm"></i>
+                </div>
+                <div class="flex-1 min-w-0">
+                  <div class="flex items-center gap-2 mb-1">
+                    <span class="font-bold text-gray-800 text-sm">{{ formatHora(cita.fechaHora) }}</span>
+                    <span class="px-2 py-0.5 text-xs font-semibold rounded-full {{ getEstadoClass(cita.estado) }}">
+                      {{ cita.estado }}
+                    </span>
+                  </div>
+                  <p class="text-sm text-gray-700 font-medium truncate">{{ cita.mascotaNombre }}</p>
+                  <p class="text-xs text-gray-400 truncate">
+                    {{ cita.servicioNombre }}
+                    @if (cita.clienteNombre) {
+                      <span class="mx-1">&middot;</span>{{ cita.clienteNombre }}
+                    }
+                  </p>
+                </div>
+              </div>
+            }
+          } @else {
+            <div class="text-center py-12 text-gray-400">
+              <span class="material-symbols-outlined text-5xl mb-3 block">event_available</span>
+              <p class="text-sm font-medium">No tienes citas programadas para hoy</p>
+              <p class="text-xs mt-1">Disfruta tu dia libre!</p>
+            </div>
+          }
+        </div>
+      </div>
+
+      <!-- Accesos rapidos trabajador -->
+      <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+        <h3 class="text-lg font-bold text-gray-800 mb-6">Accesos Rapidos</h3>
+
+        <div class="space-y-3">
+          <a routerLink="/admin/mis-citas"
+             class="flex items-center gap-4 p-4 border-2 border-dashed border-gray-200 rounded-xl hover:border-cyan-400 hover:bg-cyan-50 transition-all group cursor-pointer">
+            <div class="w-10 h-10 rounded-lg bg-cyan-500 flex items-center justify-center">
+              <i class="pi pi-calendar text-white text-sm"></i>
+            </div>
+            <div>
+              <p class="text-sm font-semibold text-gray-700 group-hover:text-cyan-600 transition-colors">Ver todas mis citas</p>
+              <p class="text-xs text-gray-400">Gestiona tu agenda completa</p>
+            </div>
+          </a>
+
+          <a routerLink="/admin/horarios"
+             class="flex items-center gap-4 p-4 border-2 border-dashed border-gray-200 rounded-xl hover:border-emerald-400 hover:bg-emerald-50 transition-all group cursor-pointer">
+            <div class="w-10 h-10 rounded-lg bg-emerald-500 flex items-center justify-center">
+              <i class="pi pi-clock text-white text-sm"></i>
+            </div>
+            <div>
+              <p class="text-sm font-semibold text-gray-700 group-hover:text-emerald-600 transition-colors">Mis horarios</p>
+              <p class="text-xs text-gray-400">Consulta tu disponibilidad</p>
+            </div>
+          </a>
+        </div>
+      </div>
+
+    </div>
+
+  }
 }

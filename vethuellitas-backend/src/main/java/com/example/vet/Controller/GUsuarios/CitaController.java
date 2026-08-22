@@ -48,6 +48,18 @@ public class CitaController {
         return ResponseEntity.ok(citaService.listarPorCliente(clienteId));
     }
 
+    // Citas por trabajador
+    @GetMapping("/trabajador/{trabajadorId}")
+    public ResponseEntity<List<CitaDTO>> porTrabajador(@PathVariable Long trabajadorId) {
+        return ResponseEntity.ok(citaService.listarPorTrabajador(trabajadorId));
+    }
+
+    // Dashboard personal del trabajador
+    @GetMapping("/dashboard/trabajador/{trabajadorId}")
+    public ResponseEntity<DashboardDTO> dashboardPorTrabajador(@PathVariable Long trabajadorId) {
+        return ResponseEntity.ok(citaService.getDashboardPorTrabajador(trabajadorId));
+    }
+
     // Cancelar
     @PatchMapping("/{id}/cancelar")
     public ResponseEntity<CitaDTO> cancelar(@PathVariable Long id) {

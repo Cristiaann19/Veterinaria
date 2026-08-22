@@ -56,6 +56,10 @@ export class Layout implements OnInit {
     this.authService.logout();
   }
 
+  PaginaWeb():void{
+    this.router.navigate(['/inicio']);
+  }
+
   toggleSidebar() {
     this.sidebarOpen = !this.sidebarOpen;
   }
@@ -67,6 +71,10 @@ export class Layout implements OnInit {
       'ROLE_USER': 'Usuario'
     };
     return roles[this.rol] ?? this.rol.replace('ROLE_', '');
+  }
+
+  get esAdmin(): boolean {
+    return this.rol === 'ROLE_ADMIN';
   }
 }
 

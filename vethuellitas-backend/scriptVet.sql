@@ -136,7 +136,8 @@ INSERT INTO trabajadores (apellidos, nombres, correo, cargo, dni, telefono, esta
 ('VARGAS QUISPE','DIEGO ARMANDO','diego@vethuellitas.com','ESTILISTA','71234567','989012345','ACTIVO'),
 ('HUAMAN CRUZ', 'DENNIS FABRIZIO','fabrizio@vethuellitas.com','CIRUJANO','73381545','920625158','ACTIVO'),
 ('SANCHEZ DIAZ','JORGE ALBERTO','jorge@vethuellitas.com','CIRUJANO','77890123','945678901','ACTIVO'),
-('RIVERA SALAZAR','ANA LUCIA','ana@vethuellitas.com','CIRUJANO','72345678','990123456','ACTIVO');
+('RIVERA SALAZAR','ANA LUCIA','ana@vethuellitas.com','CIRUJANO','72345678','990123456','ACTIVO'),
+('HUAMAN CRUZ','CRISTIAN JESUS','cristian@vethuellitas.com','VETERINARIO','73381544','907608480','ACTIVO');
 
 INSERT INTO usuarios (correo, password, trabajador_id, estado) VALUES
 ('jufer@vethuellitas.com','$2a$12$fIpHfhGambfFnIAXfn/sQuxP1LKWjttL9YKmaFO5QdETmyFg2qOCm',1,'ACTIVO'),
@@ -151,7 +152,7 @@ INSERT INTO usuarios (correo, password, trabajador_id, estado) VALUES
 ('dennis@vethuellitas.com','$2a$12$fIpHfhGambfFnIAXfn/sQuxP1LKWjttL9YKmaFO5QdETmyFg2qOCm',10,'ACTIVO'),
 ('jorge@vethuellitas.com','$2a$12$fIpHfhGambfFnIAXfn/sQuxP1LKWjttL9YKmaFO5QdETmyFg2qOCm',11,'ACTIVO'),
 ('ana@vethuellitas.com','$2a$12$fIpHfhGambfFnIAXfn/sQuxP1LKWjttL9YKmaFO5QdETmyFg2qOCm',12,'ACTIVO'),
-('cristian@vethuellitas.com','$2a$12$fIpHfhGambfFnIAXfn/sQuxP1LKWjttL9YKmaFO5QdETmyFg2qOCm',NULL,'ACTIVO'); -- NULL PORQUE ES ADMIN
+('cristian@vethuellitas.com','$2a$12$fIpHfhGambfFnIAXfn/sQuxP1LKWjttL9YKmaFO5QdETmyFg2qOCm',13,'ACTIVO');
 
 
 INSERT INTO usuarios_roles (usuario_id, rol_id) VALUES 

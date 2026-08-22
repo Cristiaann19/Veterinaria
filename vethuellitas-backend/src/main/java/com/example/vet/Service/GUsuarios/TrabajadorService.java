@@ -43,6 +43,11 @@ public class TrabajadorService {
         return trabajadorRepository.findAll();
     }
 
+    public Trabajador buscarPorId(Long id) {
+        return trabajadorRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Trabajador no encontrado: " + id));
+    }
+
     public Trabajador crear(TrabajadorRequestDTO dto) {
         Trabajador t = new Trabajador();
         t.setDni(dto.getDni());

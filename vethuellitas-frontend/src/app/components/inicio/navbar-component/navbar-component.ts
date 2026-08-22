@@ -17,6 +17,7 @@ export class NavbarComponent implements OnInit {
   nombre = '';
   inicial= '';
   menuPerfil= false;
+  rol: string = '';
 
   constructor(private authService: AuthService) {
   }
@@ -24,6 +25,7 @@ export class NavbarComponent implements OnInit {
   ngOnInit(): void {
     this.isLoggedIn = this.authService.isLoggedIn();
     if (this.isLoggedIn) {
+      this.rol = localStorage.getItem('rol') ?? '';
       this.nombre = localStorage.getItem('nombre') ?? '';
       this.inicial = this.nombre.charAt(0).toUpperCase();
     }
@@ -43,5 +45,13 @@ export class NavbarComponent implements OnInit {
     this.isLoggedIn = false;
     this.menuPerfil = false;
   }
+  
 
+  get esCliente(): boolean {
+    return this.rol === 'ROLE_USER';
+  }
+
+  get esPersonal(): boolean {
+    return this.rol === 'ROLE_ADMIN';
+  }
 }
