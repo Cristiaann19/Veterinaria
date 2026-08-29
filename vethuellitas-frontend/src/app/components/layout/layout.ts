@@ -2,7 +2,9 @@ import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterOutlet, RouterLink, RouterLinkActive, Router, NavigationEnd, ActivatedRoute } from '@angular/router';
 import { filter, map } from 'rxjs/operators';
-import { AuthService} from '../../services/auth.service';
+import { AuthService } from '../../services/auth.service';
+import { ConfiguracionService } from '../../services/configuracion-service';
+import { Configuracion } from '../../models/configuracion';
 
 @Component({
   selector: 'app-layout',
@@ -19,13 +21,15 @@ export class Layout implements OnInit {
   rol: string = '';
   inicial: string = '';
 
+  config: Partial<Configuracion> = {};
+
   constructor(
     private router: Router,
     private activatedRoute: ActivatedRoute,
     private cdr: ChangeDetectorRef,
-    private authService: AuthService
-  ) {
-  }
+    private authService: AuthService,
+    private configService: ConfiguracionService
+  ) {}
 
   ngOnInit(): void {
     this.actualizarTitulo();
@@ -38,6 +42,13 @@ export class Layout implements OnInit {
     this.rol = localStorage.getItem('rol') ?? '';
     this.nombre = localStorage.getItem('nombre') ?? this.nombre;
     this.inicial = this.correo.charAt(0).toUpperCase();
+
+    this.configService.obtener().subscribe({
+      next: (data) => {
+        this.config = data;
+        this.cdr.detectChanges();
+      }
+    });
   }
 
   private actualizarTitulo(): void {
@@ -56,12 +67,20 @@ export class Layout implements OnInit {
     this.authService.logout();
   }
 
-  PaginaWeb():void{
+  PaginaWeb(): void {
     this.router.navigate(['/inicio']);
   }
 
   toggleSidebar() {
     this.sidebarOpen = !this.sidebarOpen;
+  }
+
+  get logoUrl(): string {
+    return this.config.logoUrl || '';
+  }
+
+  get siteName(): string {
+    return this.config.siteName || 'Huellitas Vet';
   }
 
   get rolFormateado(): string {

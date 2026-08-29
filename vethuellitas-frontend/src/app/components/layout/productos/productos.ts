@@ -3,7 +3,8 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Producto } from '../../../models/producto';
 import { ProductoService } from '../../../services/productos';
-import { GToast} from '../../../services/gtoast';
+import { UploadService } from '../../../services/upload-service';
+import { GToast } from '../../../services/gtoast';
 // PrimeNG
 import { DialogModule } from 'primeng/dialog';
 import { ButtonModule } from 'primeng/button';
@@ -21,22 +22,25 @@ export class Productos implements OnInit {
   productosFiltrados: Producto[] = [];
   productosMostrados: Producto[] = [];
 
-  // Filtro
   terminoBusqueda: string = '';
 
-  // Modales
   displayEdit: boolean = false;
   displayDelete: boolean = false;
   displayNew: boolean = false;
 
-  // Producto Seleccionado
   selectedProducto: Producto = {} as Producto;
 
-  // Paginación
   first: number = 0;
   rows: number = 8;
 
-  constructor(private productoService: ProductoService, private cdr: ChangeDetectorRef, private toast: GToast) { }
+  subiendoImagen: boolean = false;
+
+  constructor(
+    private productoService: ProductoService,
+    private uploadService: UploadService,
+    private cdr: ChangeDetectorRef,
+    private toast: GToast
+  ) {}
 
   ngOnInit(): void {
     this.cargarProductos();
@@ -52,7 +56,6 @@ export class Productos implements OnInit {
     });
   }
 
-  // Lógica de Búsqueda
   filtrar(): void {
     this.productosFiltrados = this.productos.filter(p =>
       p.nombre.toLowerCase().includes(this.terminoBusqueda.toLowerCase())
@@ -70,7 +73,6 @@ export class Productos implements OnInit {
     this.actualizarVista();
   }
 
-  // Funciones de Modal
   abrirEditar(producto: Producto): void {
     this.selectedProducto = { ...producto };
     this.displayEdit = true;
@@ -88,8 +90,7 @@ export class Productos implements OnInit {
 
   eliminarProducto(): void {
     this.productoService.eliminarProducto(this.selectedProducto.id).subscribe(() => {
-      console.log('Producto Eliminado', this.selectedProducto);
-      this.toast.success("Producto Eliminada");
+      this.toast.success('Producto Eliminado');
       setTimeout(() => {
         this.cargarProductos();
         this.displayDelete = false;
@@ -100,30 +101,50 @@ export class Productos implements OnInit {
 
   guardarCambios(): void {
     this.productoService.actualizarProducto(this.selectedProducto).subscribe({
-      next: (res) => {
-        console.log('Producto actualizado con éxito:', res);
-        this.toast.success("Producto actualizado")
+      next: () => {
+        this.toast.success('Producto actualizado');
         setTimeout(() => {
           this.displayEdit = false;
           this.cargarProductos();
           this.cdr.detectChanges();
         }, 0);
       },
-      error: (err) => console.error("Error al guardar:", err)
-    })
+      error: (err) => console.error('Error al guardar:', err)
+    });
   }
 
   guardarNuevo(): void {
     this.productoService.crearProducto(this.selectedProducto).subscribe({
-      next: (res) => {
-        this.toast.success("Producto guardado");
+      next: () => {
+        this.toast.success('Producto guardado');
         setTimeout(() => {
           this.displayNew = false;
           this.cargarProductos();
           this.cdr.detectChanges();
         }, 0);
       },
-      error: (err) => console.error("Error al guardar:", err)
+      error: (err) => console.error('Error al guardar:', err)
+    });
+  }
+
+  onFileSelected(event: Event, destino: 'nuevo' | 'editar'): void {
+    const input = event.target as HTMLInputElement;
+    if (!input.files || input.files.length === 0) return;
+
+    const archivo = input.files[0];
+    this.subiendoImagen = true;
+
+    this.uploadService.subir(archivo).subscribe({
+      next: (res) => {
+        this.selectedProducto.imagen_url = res.url;
+        this.subiendoImagen = false;
+        this.cdr.detectChanges();
+      },
+      error: () => {
+        this.toast.error('Error al subir imagen');
+        this.subiendoImagen = false;
+        this.cdr.detectChanges();
+      }
     });
   }
 }

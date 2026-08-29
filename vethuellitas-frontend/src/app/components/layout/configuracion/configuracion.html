@@ -1,0 +1,117 @@
+<div class="p-1">
+    <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-8 mb-6">
+        <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+            <div>
+                <h3 class="text-4xl font-bold bg-gradient-to-r from-[#0D72C5] to-[#0a5a9c] bg-clip-text text-transparent mb-2">
+                    Configuración del Sitio
+                </h3>
+                <p class="text-gray-500 text-sm">Administra la información visible en la página pública</p>
+            </div>
+            <button (click)="guardar()" [disabled]="subiendo"
+                class="bg-[#0D72C5] text-white px-6 py-3 rounded-xl transition-all flex items-center justify-center gap-2 font-semibold text-sm shadow-lg shadow-blue-200/50 hover:shadow-xl hover:shadow-blue-300/50 hover:-translate-y-0.5 whitespace-nowrap cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed">
+                <span class="material-symbols-outlined text-lg">save</span>
+                Guardar Cambios
+            </button>
+        </div>
+    </div>
+
+    @if (cargando) {
+        <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-16 text-center">
+            <div class="inline-block p-5 bg-gray-100 rounded-full mb-3 animate-pulse">
+                <span class="material-symbols-outlined text-4xl text-gray-400">settings</span>
+            </div>
+            <p class="text-gray-500 text-sm">Cargando configuración...</p>
+        </div>
+    } @else {
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+
+            <!-- Texto del Sitio -->
+            <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
+                <h4 class="text-lg font-bold text-gray-800 mb-4 flex items-center gap-2">
+                    <span class="material-symbols-outlined text-[#0D72C5]">edit</span>
+                    Información del Sitio
+                </h4>
+                <div class="flex flex-col gap-4">
+                    <div>
+                        <label class="font-semibold text-gray-700 block mb-2 text-sm">Nombre del Sitio</label>
+                        <input type="text" [(ngModel)]="config.siteName"
+                            class="w-full px-3 py-2 rounded-lg border border-gray-300 focus:border-[#0D72C5] focus:ring-2 focus:ring-blue-100 transition-all outline-none" />
+                    </div>
+                    <div>
+                        <label class="font-semibold text-gray-700 block mb-2 text-sm">Teléfono</label>
+                        <input type="text" [(ngModel)]="config.telefono"
+                            class="w-full px-3 py-2 rounded-lg border border-gray-300 focus:border-[#0D72C5] focus:ring-2 focus:ring-blue-100 transition-all outline-none" />
+                    </div>
+                    <div>
+                        <label class="font-semibold text-gray-700 block mb-2 text-sm">Correo de Contacto</label>
+                        <input type="email" [(ngModel)]="config.correo"
+                            class="w-full px-3 py-2 rounded-lg border border-gray-300 focus:border-[#0D72C5] focus:ring-2 focus:ring-blue-100 transition-all outline-none" />
+                    </div>
+                </div>
+            </div>
+
+            <!-- Imágenes -->
+            <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
+                <h4 class="text-lg font-bold text-gray-800 mb-4 flex items-center gap-2">
+                    <span class="material-symbols-outlined text-[#0D72C5]">image</span>
+                    Imágenes del Sitio
+                </h4>
+                <div class="flex flex-col gap-4">
+
+                    <!-- Logo -->
+                    <div>
+                        <label class="font-semibold text-gray-700 block mb-2 text-sm">Logo</label>
+                        @if (config.logoUrl) {
+                            <div class="mb-2">
+                                <img [src]="config.logoUrl" alt="Logo" class="h-16 object-contain rounded border border-gray-200 p-1" />
+                            </div>
+                        }
+                        <input type="file" accept="image/*" (change)="onFileSelected($event, 'logoUrl')"
+                            class="block w-full text-sm text-gray-600 file:mr-3 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-[#0D72C5] file:text-white hover:file:bg-[#0a5a9c] file:cursor-pointer" />
+                    </div>
+
+                    <!-- Banner -->
+                    <div>
+                        <label class="font-semibold text-gray-700 block mb-2 text-sm">Banner</label>
+                        @if (config.bannerUrl) {
+                            <div class="mb-2">
+                                <img [src]="config.bannerUrl" alt="Banner" class="w-full h-24 object-cover rounded border border-gray-200" />
+                            </div>
+                        }
+                        <input type="file" accept="image/*" (change)="onFileSelected($event, 'bannerUrl')"
+                            class="block w-full text-sm text-gray-600 file:mr-3 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-[#0D72C5] file:text-white hover:file:bg-[#0a5a9c] file:cursor-pointer" />
+                    </div>
+
+                    <!-- Hero Video URL -->
+                    <div>
+                        <label class="font-semibold text-gray-700 block mb-2 text-sm">URL del Video Hero (Cloudinary)</label>
+                        <input type="text" [(ngModel)]="config.heroVideoUrl"
+                            placeholder="https://res.cloudinary.com/.../video/upload/..."
+                            class="w-full px-3 py-2 rounded-lg border border-gray-300 focus:border-[#0D72C5] focus:ring-2 focus:ring-blue-100 transition-all outline-none text-sm" />
+                    </div>
+
+                    <!-- About Image -->
+                    <div>
+                        <label class="font-semibold text-gray-700 block mb-2 text-sm">Imagen "Sobre Nosotros"</label>
+                        @if (config.aboutImageUrl) {
+                            <div class="mb-2">
+                                <img [src]="config.aboutImageUrl" alt="About" class="w-full h-32 object-cover rounded border border-gray-200" />
+                            </div>
+                        }
+                        <input type="file" accept="image/*" (change)="onFileSelected($event, 'aboutImageUrl')"
+                            class="block w-full text-sm text-gray-600 file:mr-3 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-[#0D72C5] file:text-white hover:file:bg-[#0a5a9c] file:cursor-pointer" />
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+
+        @if (subiendo) {
+            <div class="fixed bottom-6 right-6 bg-white border border-gray-200 shadow-xl rounded-xl px-5 py-3 flex items-center gap-3 z-50">
+                <div class="w-4 h-4 border-2 border-[#0D72C5] border-t-transparent rounded-full animate-spin"></div>
+                <span class="text-sm text-gray-700 font-medium">Subiendo imagen...</span>
+            </div>
+        }
+    }
+</div>

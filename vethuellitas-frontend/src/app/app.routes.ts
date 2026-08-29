@@ -11,6 +11,7 @@ import { Productos } from './components/layout/productos/productos';
 import { Ventas } from './components/layout/ventas/ventas';
 import { Citas } from './components/layout/citas/citas';
 import { Servicios } from './components/layout/servicios/servicios';
+import { ConfiguracionPage } from './components/layout/configuracion/configuracion';
 import { Inicio } from './components/inicio/inicio';
 import { authGuard} from './services/auth.guard';
 import {PagosComponent} from './components/layout/pagos-component/pagos-component';
@@ -61,6 +62,7 @@ export const routes: Routes = [
       { path: 'productos', component: Productos, data: { title: 'Productos', roles: ['ROLE_ADMIN'] } },
       { path: 'ventas', component: Ventas, data: { title: 'Ventas', roles: ['ROLE_ADMIN'] } },
       { path: 'servicios', component: Servicios, data: { title: 'Servicios', roles: ['ROLE_ADMIN'] } },
+      { path: 'configuracion', component: ConfiguracionPage, data: { title: 'Configuración', roles: ['ROLE_ADMIN'] } },
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' }
     ]
   },
