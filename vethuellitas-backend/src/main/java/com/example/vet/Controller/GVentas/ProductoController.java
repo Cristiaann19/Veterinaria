@@ -2,6 +2,7 @@ package com.example.vet.Controller.GVentas;
 
 import com.example.vet.Model.GestionVentas.Producto;
 import com.example.vet.Service.GVentas.ProductoService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -21,7 +22,7 @@ public class ProductoController {
     }
 
     @PostMapping
-    public ResponseEntity<Producto> guardar(@RequestBody Producto producto) {
+    public ResponseEntity<Producto> guardar(@Valid @RequestBody Producto producto) {
         return ResponseEntity.ok(productoService.guardar(producto));
     }
 

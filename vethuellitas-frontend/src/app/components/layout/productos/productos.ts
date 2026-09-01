@@ -84,12 +84,12 @@ export class Productos implements OnInit {
   }
 
   abrirNuevo(): void {
-    this.selectedProducto = {} as Producto;
+    this.selectedProducto = { nombre: '', precio: 0, stock: 0, descripcion: '', imagen_url: '', categorias: [] } as Producto;
     this.displayNew = true;
   }
 
   eliminarProducto(): void {
-    this.productoService.eliminarProducto(this.selectedProducto.id).subscribe(() => {
+    this.productoService.eliminarProducto(this.selectedProducto.id!).subscribe(() => {
       this.toast.success('Producto Eliminado');
       setTimeout(() => {
         this.cargarProductos();

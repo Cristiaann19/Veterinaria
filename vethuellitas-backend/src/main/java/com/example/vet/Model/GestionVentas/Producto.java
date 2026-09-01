@@ -1,11 +1,12 @@
 package com.example.vet.Model.GestionVentas;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.Data;
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -42,7 +43,7 @@ public class Producto {
     private String imagenUrl;
 
     @ManyToMany(fetch = FetchType.EAGER)
-    @JsonManagedReference
+    @JsonIgnoreProperties("productos")
     @JoinTable(name = "producto_categoria", joinColumns = @JoinColumn(name = "producto_id"), inverseJoinColumns = @JoinColumn(name = "categoria_id"))
-    private List<Categoria> categorias;
+    private List<Categoria> categorias = new ArrayList<>();
 }

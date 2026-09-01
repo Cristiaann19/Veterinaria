@@ -113,7 +113,7 @@ export class ProductosPage implements OnInit {
 
   agregarAlCarrito(producto: Producto): void {
     this.carritoService.agregar({
-      productoId: producto.id,
+      productoId: producto.id!,
       nombreProducto: producto.nombre,
       precioUnitario: producto.precio,
       cantidad: 1,
