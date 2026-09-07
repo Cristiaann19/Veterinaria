@@ -13,7 +13,6 @@ public class Configuracion {
     private Long id;
 
     private String logoUrl;
-    private String bannerUrl;
     private String heroVideoUrl;
     private String aboutImageUrl;
     private String siteName;

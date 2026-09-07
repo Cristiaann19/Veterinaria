@@ -10,11 +10,12 @@ import { DialogModule } from 'primeng/dialog';
 import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
 import { PaginatorModule } from 'primeng/paginator';
+import { TableModule } from 'primeng/table';
 
 @Component({
   selector: 'app-productos',
   standalone: true,
-  imports: [CommonModule, FormsModule, DialogModule, ButtonModule, InputTextModule, PaginatorModule],
+  imports: [CommonModule, FormsModule, TableModule, DialogModule, ButtonModule, InputTextModule, PaginatorModule],
   templateUrl: './productos.html',
 })
 export class Productos implements OnInit {

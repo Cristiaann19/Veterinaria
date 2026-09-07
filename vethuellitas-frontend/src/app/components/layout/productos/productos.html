@@ -26,56 +26,125 @@
         </div>
     </div>
 
-    <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
-            @for (p of productosMostrados; track p.id) {
-            <div
-                class="group bg-white rounded-xl border border-gray-200 overflow-hidden hover:border-gray-300 hover:shadow-lg transition-all duration-300">
-                <div class="relative h-44 bg-gray-50 overflow-hidden flex items-center justify-center">
-                    <img [src]="p.imagen_url" [alt]="p.nombre"
-                        class="h-full w-full object-contain p-3 group-hover:scale-105 transition-transform duration-300" />
-                    <div
-                        class="absolute top-2 right-2 bg-white px-2.5 py-1 rounded-full text-xs font-semibold text-gray-700 shadow-sm border border-gray-200">
-                        Stock: {{p.stock}}
-                    </div>
-                </div>
+    <div class="bg-white rounded-3xl shadow-xl border border-gray-100 overflow-hidden p-4">
+        <p-table [value]="productosMostrados" [sortMode]="'single'" styleClass="modern-table">
+            <ng-template pTemplate="header">
+                <tr class="bg-gradient-to-r from-gray-50 to-gray-100/50 border-b-2 border-gray-200">
+                    <th pSortableColumn="id" class="px-6 py-4 text-left text-xs font-bold text-gray-600 uppercase tracking-wider cursor-pointer hover:bg-gray-100 transition-colors">
+                        <div class="flex items-center gap-2">
+                            <i class="pi pi-hashtag text-[#0D72C5] text-sm"></i>
+                            # <p-sortIcon field="id"></p-sortIcon>
+                        </div>
+                    </th>
+                    <th class="px-6 py-4 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">
+                        <div class="flex items-center gap-2">
+                            <i class="pi pi-image text-[#0D72C5] text-sm"></i>
+                            Imagen
+                        </div>
+                    </th>
+                    <th pSortableColumn="nombre" class="px-6 py-4 text-left text-xs font-bold text-gray-600 uppercase tracking-wider cursor-pointer hover:bg-gray-100 transition-colors">
+                        <div class="flex items-center gap-2">
+                            <i class="pi pi-tag text-[#0D72C5] text-sm"></i>
+                            Nombre <p-sortIcon field="nombre"></p-sortIcon>
+                        </div>
+                    </th>
+                    <th class="px-6 py-4 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">
+                        <div class="flex items-center gap-2">
+                            <i class="pi pi-align-left text-[#0D72C5] text-sm"></i>
+                            Descripción
+                        </div>
+                    </th>
+                    <th pSortableColumn="precio" class="px-6 py-4 text-left text-xs font-bold text-gray-600 uppercase tracking-wider cursor-pointer hover:bg-gray-100 transition-colors">
+                        <div class="flex items-center gap-2">
+                            <i class="pi pi-dollar text-[#0D72C5] text-sm"></i>
+                            Precio <p-sortIcon field="precio"></p-sortIcon>
+                        </div>
+                    </th>
+                    <th pSortableColumn="stock" class="px-6 py-4 text-left text-xs font-bold text-gray-600 uppercase tracking-wider cursor-pointer hover:bg-gray-100 transition-colors">
+                        <div class="flex items-center gap-2">
+                            <i class="pi pi-box text-[#0D72C5] text-sm"></i>
+                            Stock <p-sortIcon field="stock"></p-sortIcon>
+                        </div>
+                    </th>
+                    <th class="px-6 py-4 text-center text-xs font-bold text-gray-600 uppercase tracking-wider">
+                        <div class="flex items-center justify-center gap-2">
+                            <i class="pi pi-cog text-[#0D72C5] text-sm"></i>
+                            Acciones
+                        </div>
+                    </th>
+                </tr>
+            </ng-template>
 
-                <div class="p-4">
-                    <h4 class="font-bold text-gray-800 text-base mb-1.5 line-clamp-1">
-                        {{p.nombre}}
-                    </h4>
-                    <p class="text-gray-500 text-xs mb-3 line-clamp-2 h-8">
-                        {{p.descripcion || 'Sin descripción disponible'}}
-                    </p>
-                    <p class="text-emerald-600 font-bold text-xl mb-3">
-                        S/ {{p.precio | number:'1.2-2'}}
-                    </p>
+            <ng-template pTemplate="body" let-p>
+                <tr class="border-b border-gray-100 hover:bg-blue-50/30 transition-all">
+                    <td class="px-6 py-4">
+                        <span class="!font-mono text-xs text-gray-400 bg-gray-100 px-2 py-1 rounded-lg">
+                            #{{ p.id?.toString().padStart(4, '0') }}
+                        </span>
+                    </td>
+                    <td class="px-6 py-4">
+                        <div class="w-12 h-12 rounded-lg overflow-hidden border border-gray-200 bg-gray-50 flex items-center justify-center flex-shrink-0">
+                            @if (p.imagen_url) {
+                                <img [src]="p.imagen_url" [alt]="p.nombre"
+                                    class="w-full h-full object-cover" />
+                            } @else {
+                                <i class="pi pi-image text-gray-300"></i>
+                            }
+                        </div>
+                    </td>
+                    <td class="px-6 py-4">
+                        <span class="text-sm font-medium text-gray-700">{{ p.nombre }}</span>
+                    </td>
+                    <td class="px-6 py-4">
+                        <span class="text-sm text-gray-500 max-w-xs block truncate">{{ p.descripcion || 'Sin descripción' }}</span>
+                    </td>
+                    <td class="px-6 py-4">
+                        <span class="text-sm font-bold text-gray-900 bg-gray-50 px-3 py-1.5 rounded-lg inline-block border border-gray-200">
+                            S/ {{ p.precio | number:'1.2-2' }}
+                        </span>
+                    </td>
+                    <td class="px-6 py-4">
+                        <span [class]="p.stock > 0
+                            ? 'bg-green-50 text-green-700 border-green-100'
+                            : 'bg-red-50 text-red-700 border-red-100'"
+                            class="px-3 py-1.5 inline-flex items-center gap-1.5 rounded-full font-semibold text-xs border">
+                            @if (p.stock > 0) {
+                                <span class="w-2 h-2 rounded-full bg-green-500"></span>
+                            } @else {
+                                <span class="w-2 h-2 rounded-full bg-red-500 animate-pulse"></span>
+                            }
+                            {{ p.stock }}
+                        </span>
+                    </td>
+                    <td class="px-6 py-4 text-center">
+                        <div class="flex justify-center gap-2">
+                            <button (click)="abrirEditar(p)"
+                                class="p-2 text-[#0D72C5] hover:bg-blue-50 rounded-lg transition-colors cursor-pointer border-none"
+                                title="Editar">
+                                <span class="material-symbols-outlined text-lg">edit</span>
+                            </button>
+                            <button (click)="confirmarEliminar(p)"
+                                class="p-2 text-red-400 hover:bg-red-50 rounded-lg transition-colors cursor-pointer border-none"
+                                title="Eliminar">
+                                <span class="material-symbols-outlined text-lg">delete</span>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            </ng-template>
 
-                    <div class="flex gap-2">
-                        <button (click)="abrirEditar(p)"
-                            class="flex-1 bg-[#0D72C5] hover:bg-[#0B5A9C] text-white py-2 rounded-lg text-sm font-semibold transition-all flex items-center justify-center gap-1.5 cursor-pointer border-none">
-                            <i class="pi pi-pencil text-xs"></i>
-                            Editar
-                        </button>
-                        <button (click)="confirmarEliminar(p)"
-                            class="px-3 bg-red-500 hover:bg-red-600 text-white rounded-lg transition-all cursor-pointer border-none">
-                            <i class="pi pi-trash text-sm"></i>
-                        </button>
-                    </div>
-                </div>
-            </div>
-            }
-        </div>
-
-        @if (productosMostrados.length === 0) {
-        <div class="text-center py-16">
-            <div class="inline-block p-5 bg-gray-100 rounded-full mb-3">
-                <i class="pi pi-inbox text-4xl text-gray-400"></i>
-            </div>
-            <h3 class="text-lg font-bold text-gray-700 mb-1">No se encontraron productos</h3>
-            <p class="text-gray-500 text-sm">Intenta con otro término de búsqueda</p>
-        </div>
-        }
+            <ng-template pTemplate="emptymessage">
+                <tr>
+                    <td colspan="7" class="text-center py-16">
+                        <div class="flex flex-col items-center gap-3">
+                            <i class="pi pi-inbox text-5xl text-gray-300"></i>
+                            <p class="text-gray-400 font-medium">No se encontraron productos</p>
+                            <p class="text-gray-400 text-sm">Intenta con otro término de búsqueda</p>
+                        </div>
+                    </td>
+                </tr>
+            </ng-template>
+        </p-table>
     </div>
 
     <div class="mt-4">
