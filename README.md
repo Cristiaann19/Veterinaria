@@ -279,7 +279,6 @@ El proyecto trabaja bajo el modelo **GitHub Flow**: la rama `main` siempre se ma
 
 ## 📋 Gestión del proyecto
 
-- **Colaboración, tareas y seguimiento:** [ClickUp](https://clickup.com) — tableros Kanban y gestión de incidencias.
 - **Diseño y prototipado de interfaces:** Draw.io (mockups de landing, login, panel administrativo).
 
 ---
