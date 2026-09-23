@@ -23,6 +23,7 @@ import {MisCitas} from './components/inicio/mis-citas/mis-citas';
 import {MisMascotas} from './components/inicio/mis-mascotas/mis-mascotas';
 import {ProductosPage} from './components/inicio/productos-page/productos-page';
 import {PerfilPage} from './components/inicio/perfil-page/perfil-page';
+import {Categorias} from './components/layout/categorias/categorias';
 import {roleGuard} from './services/role.guard';
 
 
@@ -60,6 +61,7 @@ export const routes: Routes = [
       { path: 'enfermedades', component: Enfermedades, data: { title: 'Enfermedades', roles: ['ROLE_ADMIN'] } },
       { path: 'trabajadores', component: Trabajadores, data: { title: 'Trabajadores', roles: ['ROLE_ADMIN'] } },
       { path: 'productos', component: Productos, data: { title: 'Productos', roles: ['ROLE_ADMIN'] } },
+      { path: 'categorias', component: Categorias, data: { title: 'Categorías', roles: ['ROLE_ADMIN'] } },
       { path: 'ventas', component: Ventas, data: { title: 'Ventas', roles: ['ROLE_ADMIN'] } },
       { path: 'servicios', component: Servicios, data: { title: 'Servicios', roles: ['ROLE_ADMIN'] } },
       { path: 'configuracion', component: ConfiguracionPage, data: { title: 'Configuración', roles: ['ROLE_ADMIN'] } },

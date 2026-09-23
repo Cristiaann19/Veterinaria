@@ -1,21 +1,24 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { Producto } from '../../../models/producto';
+import { Producto, Categoria } from '../../../models/producto';
 import { ProductoService } from '../../../services/productos';
+import { CategoriaService } from '../../../services/categoria-service';
 import { UploadService } from '../../../services/upload-service';
 import { GToast } from '../../../services/gtoast';
 // PrimeNG
 import { DialogModule } from 'primeng/dialog';
 import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
+import { TextareaModule } from 'primeng/textarea';
+import { MultiSelectModule } from 'primeng/multiselect';
 import { PaginatorModule } from 'primeng/paginator';
 import { TableModule } from 'primeng/table';
 
 @Component({
   selector: 'app-productos',
   standalone: true,
-  imports: [CommonModule, FormsModule, TableModule, DialogModule, ButtonModule, InputTextModule, PaginatorModule],
+  imports: [CommonModule, FormsModule, TableModule, DialogModule, ButtonModule, InputTextModule, TextareaModule, MultiSelectModule, PaginatorModule],
   templateUrl: './productos.html',
 })
 export class Productos implements OnInit {
@@ -36,8 +39,11 @@ export class Productos implements OnInit {
 
   subiendoImagen: boolean = false;
 
+  categoriasDisponibles: Categoria[] = [];
+
   constructor(
     private productoService: ProductoService,
+    private categoriaService: CategoriaService,
     private uploadService: UploadService,
     private cdr: ChangeDetectorRef,
     private toast: GToast
@@ -45,6 +51,12 @@ export class Productos implements OnInit {
 
   ngOnInit(): void {
     this.cargarProductos();
+    this.categoriaService.listar().subscribe({
+      next: (data) => {
+        this.categoriasDisponibles = data;
+        this.cdr.detectChanges();
+      }
+    });
   }
 
   cargarProductos(): void {

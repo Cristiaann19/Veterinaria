@@ -164,7 +164,7 @@
 
             <div class="field">
                 <label class="font-semibold text-gray-700 block mb-2 text-sm">Descripción</label>
-                <textarea pInputTextarea [(ngModel)]="selectedProducto.descripcion" rows="3"
+                <textarea pTextarea [(ngModel)]="selectedProducto.descripcion" rows="3"
                     class="w-full px-3 py-2 rounded-lg border border-gray-300 focus:border-[#0D72C5] focus:ring-2 focus:ring-blue-100 transition-all outline-none resize-none"></textarea>
             </div>
 
@@ -179,6 +179,21 @@
                     <input pInputText type="number" [(ngModel)]="selectedProducto.stock"
                         class="w-full px-3 py-2 rounded-lg border border-gray-300 focus:border-[#0D72C5] focus:ring-2 focus:ring-blue-100 transition-all outline-none" />
                 </div>
+            </div>
+
+            <div class="field">
+                <label class="font-semibold text-gray-700 block mb-2 text-sm">Categorías</label>
+                <p-multiSelect [(ngModel)]="selectedProducto.categorias" [options]="categoriasDisponibles"
+                    optionLabel="nombre" defaultLabel="Seleccionar categorías"
+                    class="w-full"
+                    [style]="{'width': '100%'}"
+                    [panelStyle]="{'max-height': '200px', 'overflow-y': 'auto'}">
+                    <ng-template let-categoria pTemplate="item">
+                        <div class="flex items-center gap-2">
+                            <span>{{ categoria.nombre }}</span>
+                        </div>
+                    </ng-template>
+                </p-multiSelect>
             </div>
 
             <div class="field">
@@ -246,7 +261,7 @@
 
             <div class="field">
                 <label class="font-semibold text-gray-700 block mb-2 text-sm">Descripción</label>
-                <textarea pInputTextarea [(ngModel)]="selectedProducto.descripcion" rows="3"
+                <textarea pTextarea [(ngModel)]="selectedProducto.descripcion" rows="3"
                     class="w-full px-3 py-2 rounded-lg border border-gray-300 focus:border-[#0D72C5] focus:ring-2 focus:ring-blue-100 transition-all outline-none resize-none"></textarea>
             </div>
 
@@ -261,6 +276,21 @@
                     <input pInputText type="number" [(ngModel)]="selectedProducto.stock"
                         class="w-full px-3 py-2 rounded-lg border border-gray-300 focus:border-[#0D72C5] focus:ring-2 focus:ring-blue-100 transition-all outline-none" />
                 </div>
+            </div>
+
+            <div class="field">
+                <label class="font-semibold text-gray-700 block mb-2 text-sm">Categorías</label>
+                <p-multiSelect [(ngModel)]="selectedProducto.categorias" [options]="categoriasDisponibles"
+                    optionLabel="nombre" defaultLabel="Seleccionar categorías"
+                    class="w-full"
+                    [style]="{'width': '100%'}"
+                    [panelStyle]="{'max-height': '200px', 'overflow-y': 'auto'}">
+                    <ng-template let-categoria pTemplate="item">
+                        <div class="flex items-center gap-2">
+                            <span>{{ categoria.nombre }}</span>
+                        </div>
+                    </ng-template>
+                </p-multiSelect>
             </div>
 
             <div class="field">

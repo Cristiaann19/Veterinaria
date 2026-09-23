@@ -1,0 +1,188 @@
+<div class="p-1">
+    <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-8 mb-6">
+        <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+            <div>
+                <h3
+                    class="text-4xl font-bold bg-gradient-to-r from-[#0D72C5] to-[#0a5a9c] bg-clip-text text-transparent mb-2">
+                    Gestión de Categorías</h3>
+                <p class="text-gray-500 text-sm">Administra las categorías de productos</p>
+            </div>
+
+            <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 w-full md:w-auto">
+                <div class="relative group w-full sm:w-80">
+                    <i
+                        class="pi pi-search absolute left-4 top-1/2 -translate-y-1/2 text-gray-500 group-focus-within:text-emerald-500 transition-colors"></i>
+                    <input type="text" [(ngModel)]="terminoBusqueda" (input)="filtrar()"
+                        placeholder="Buscar categoría..."
+                        class="w-full pl-11 pr-4 py-3 rounded-xl border-2 border-gray-200 focus:border-emerald-500 focus:ring-4 focus:ring-emerald-100 transition-all outline-none text-sm bg-white/80 backdrop-blur-sm" />
+                </div>
+                <button (click)="abrirNuevo()"
+                    class="bg-[#0D72C5] text-white px-6 py-3 rounded-xl transition-all flex items-center justify-center gap-2 font-semibold text-sm shadow-lg shadow-blue-200/50 hover:shadow-xl hover:shadow-blue-300/50 hover:-translate-y-0.5 whitespace-nowrap group cursor-pointer">
+                    <span
+                        class="material-symbols-outlined text-lg group-hover:rotate-90 transition-transform">add</span>
+                    Nueva Categoría
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="bg-white rounded-3xl shadow-xl border border-gray-100 overflow-hidden p-4">
+        <p-table [value]="categoriasMostradas" [sortMode]="'single'" styleClass="modern-table">
+            <ng-template pTemplate="header">
+                <tr class="bg-gradient-to-r from-gray-50 to-gray-100/50 border-b-2 border-gray-200">
+                    <th pSortableColumn="id" class="px-6 py-4 text-left text-xs font-bold text-gray-600 uppercase tracking-wider cursor-pointer hover:bg-gray-100 transition-colors">
+                        <div class="flex items-center gap-2">
+                            <i class="pi pi-hashtag text-[#0D72C5] text-sm"></i>
+                            # <p-sortIcon field="id"></p-sortIcon>
+                        </div>
+                    </th>
+                    <th pSortableColumn="nombre" class="px-6 py-4 text-left text-xs font-bold text-gray-600 uppercase tracking-wider cursor-pointer hover:bg-gray-100 transition-colors">
+                        <div class="flex items-center gap-2">
+                            <i class="pi pi-tag text-[#0D72C5] text-sm"></i>
+                            Nombre <p-sortIcon field="nombre"></p-sortIcon>
+                        </div>
+                    </th>
+                    <th class="px-6 py-4 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">
+                        <div class="flex items-center gap-2">
+                            <i class="pi pi-align-left text-[#0D72C5] text-sm"></i>
+                            Descripción
+                        </div>
+                    </th>
+                    <th class="px-6 py-4 text-center text-xs font-bold text-gray-600 uppercase tracking-wider">
+                        <div class="flex items-center justify-center gap-2">
+                            <i class="pi pi-cog text-[#0D72C5] text-sm"></i>
+                            Acciones
+                        </div>
+                    </th>
+                </tr>
+            </ng-template>
+
+            <ng-template pTemplate="body" let-c>
+                <tr class="border-b border-gray-100 hover:bg-blue-50/30 transition-all">
+                    <td class="px-6 py-4">
+                        <span class="!font-mono text-xs text-gray-400 bg-gray-100 px-2 py-1 rounded-lg">
+                            #{{ c.id?.toString().padStart(4, '0') }}
+                        </span>
+                    </td>
+                    <td class="px-6 py-4">
+                        <span class="text-sm font-medium text-gray-700">{{ c.nombre }}</span>
+                    </td>
+                    <td class="px-6 py-4">
+                        <span class="text-sm text-gray-500 max-w-xs block truncate">{{ c.descripcion || 'Sin descripción' }}</span>
+                    </td>
+                    <td class="px-6 py-4 text-center">
+                        <div class="flex justify-center gap-2">
+                            <button (click)="abrirEditar(c)"
+                                class="p-2 text-[#0D72C5] hover:bg-blue-50 rounded-lg transition-colors cursor-pointer border-none"
+                                title="Editar">
+                                <span class="material-symbols-outlined text-lg">edit</span>
+                            </button>
+                            <button (click)="confirmarEliminar(c)"
+                                class="p-2 text-red-400 hover:bg-red-50 rounded-lg transition-colors cursor-pointer border-none"
+                                title="Eliminar">
+                                <span class="material-symbols-outlined text-lg">delete</span>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            </ng-template>
+
+            <ng-template pTemplate="emptymessage">
+                <tr>
+                    <td colspan="4" class="text-center py-16">
+                        <div class="flex flex-col items-center gap-3">
+                            <i class="pi pi-inbox text-5xl text-gray-300"></i>
+                            <p class="text-gray-400 font-medium">No se encontraron categorías</p>
+                            <p class="text-gray-400 text-sm">Intenta con otro término de búsqueda</p>
+                        </div>
+                    </td>
+                </tr>
+            </ng-template>
+        </p-table>
+    </div>
+
+    <div class="mt-4">
+        <p-paginator (onPageChange)="onPageChange($event)" [first]="first" [rows]="rows"
+            [totalRecords]="categoriasFiltradas.length">
+        </p-paginator>
+    </div>
+
+    <p-dialog header="Editar Categoría" [(visible)]="displayEdit" [modal]="true" [style]="{width: '450px'}"
+        [draggable]="false" [resizable]="false">
+        <div class="flex flex-col gap-4 mt-4">
+            <div class="field">
+                <label class="font-semibold text-gray-700 block mb-2 text-sm">Nombre</label>
+                <input pInputText [(ngModel)]="selectedCategoria.nombre"
+                    class="w-full px-3 py-2 rounded-lg border border-gray-300 focus:border-[#0D72C5] focus:ring-2 focus:ring-blue-100 transition-all outline-none" />
+            </div>
+
+            <div class="field">
+                <label class="font-semibold text-gray-700 block mb-2 text-sm">Descripción</label>
+                <textarea pTextarea [(ngModel)]="selectedCategoria.descripcion" rows="3"
+                    class="w-full px-3 py-2 rounded-lg border border-gray-300 focus:border-[#0D72C5] focus:ring-2 focus:ring-blue-100 transition-all outline-none resize-none"></textarea>
+            </div>
+        </div>
+
+        <ng-template pTemplate="footer">
+            <div class="flex gap-2 justify-end pt-4">
+                <button pButton label="Cancelar" icon="pi pi-times" severity="secondary"
+                    class="p-button-text text-gray-600 hover:bg-gray-50" (click)="displayEdit=false"></button>
+                <button pButton label="Guardar Cambios" icon="pi pi-check"
+                    class="!bg-[#0D72C5] hover:!bg-[#0a5a9c] text-white !border-none"
+                    (click)="guardarCambios()"></button>
+            </div>
+        </ng-template>
+    </p-dialog>
+
+    <p-dialog header="Confirmar Eliminación" [(visible)]="displayDelete" [modal]="true" [style]="{width: '400px'}"
+        [draggable]="false" [resizable]="false">
+        <div class="flex flex-col items-center text-center gap-4 py-3">
+            <div class="p-4 bg-red-50 rounded-full">
+                <i class="pi pi-exclamation-triangle text-red-500 text-4xl"></i>
+            </div>
+            <div>
+                <h4 class="text-base font-bold text-gray-800 mb-2">¿Estás seguro?</h4>
+                <p class="text-gray-600 text-sm">
+                    Se eliminará la categoría <span class="font-semibold text-gray-800">{{selectedCategoria.nombre}}</span>.
+                </p>
+            </div>
+        </div>
+
+        <ng-template pTemplate="footer">
+            <div class="flex gap-2 justify-center pt-4">
+                <button pButton label="Cancelar" severity="secondary"
+                    class="p-button-text text-gray-600 bg-gray-100 hover:bg-gray-300"
+                    (click)="displayDelete=false"></button>
+                <button pButton label="Sí, eliminar" class="!bg-red-500 hover:!bg-red-600 text-white !border-none"
+                    (click)="eliminarCategoria()"></button>
+            </div>
+        </ng-template>
+    </p-dialog>
+
+    <p-dialog header="Nueva Categoría" [(visible)]="displayNew" [modal]="true" [style]="{width: '450px'}"
+        [draggable]="false" [resizable]="false">
+        <div class="flex flex-col gap-4 mt-4">
+            <div class="field">
+                <label class="font-semibold text-gray-700 block mb-2 text-sm">Nombre</label>
+                <input pInputText [(ngModel)]="selectedCategoria.nombre"
+                    class="w-full px-3 py-2 rounded-lg border border-gray-300 focus:border-[#0D72C5] focus:ring-2 focus:ring-blue-100 transition-all outline-none" />
+            </div>
+
+            <div class="field">
+                <label class="font-semibold text-gray-700 block mb-2 text-sm">Descripción</label>
+                <textarea pTextarea [(ngModel)]="selectedCategoria.descripcion" rows="3"
+                    class="w-full px-3 py-2 rounded-lg border border-gray-300 focus:border-[#0D72C5] focus:ring-2 focus:ring-blue-100 transition-all outline-none resize-none"></textarea>
+            </div>
+        </div>
+
+        <ng-template pTemplate="footer">
+            <div class="flex gap-2 justify-end pt-4">
+                <button pButton label="Cancelar" icon="pi pi-times" severity="secondary"
+                    class="p-button-text text-gray-600 hover:bg-blue-50" (click)="displayNew=false"></button>
+                <button pButton label="Crear Categoría" icon="pi pi-check"
+                    class="!bg-[#0D72C5] hover:!bg-[#0a5a9c] text-white !border-none"
+                    (click)="guardarNuevo()"></button>
+            </div>
+        </ng-template>
+    </p-dialog>
+</div>
