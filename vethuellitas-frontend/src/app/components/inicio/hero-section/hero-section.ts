@@ -17,7 +17,7 @@ export class HeroSection implements OnInit {
   textY = 0;
 
   config: Partial<Configuracion> = {};
-  defaultVideoUrl = 'https://res.cloudinary.com/ddxdadxtr/video/upload/v1786930865/peluche_ybwohv.webm';
+  defaultVideoUrl = 'https://res.cloudinary.com/ddxdadxtr/video/upload/v1788636529/peluche_sohgi5.webm';
 
   constructor(
     private configService: ConfiguracionService,
