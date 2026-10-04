@@ -44,7 +44,11 @@ export class MisMascotas implements OnInit {
           this.cdr.markForCheck();
         });
       },
-      error: () => { this.cargando = false; this.cdr.markForCheck(); }
+      error: () => {
+        this.cargando = false;
+        this.toast.error('No se pudieron cargar tus mascotas');
+        this.cdr.markForCheck();
+      }
     });
   }
 

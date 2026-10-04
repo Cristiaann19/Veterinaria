@@ -1,7 +1,9 @@
 import {Component, inject, OnInit} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Vacuna } from '../../../models/vacuna';
+import { Enfermedad } from '../../../models/enfermedad';
 import { VacunaService } from '../../../services/vacuna';
+import { EnfermedadesService } from '../../../services/enfermedades-service';
 import { ChangeDetectorRef } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { DialogModule } from 'primeng/dialog';
@@ -22,6 +24,8 @@ export class Vacunas implements OnInit {
   vacunasFiltradas: Vacuna[] = [];
   vacunasMostradas: Vacuna[] = [];
 
+  enfermedades: Enfermedad[] = [];
+
   // Filtro
   terminoBusqueda: string = '';
 
@@ -37,10 +41,35 @@ export class Vacunas implements OnInit {
   first: number = 0;
   rows: number = 8;
 
-  constructor(private vacunaService: VacunaService, private cdr: ChangeDetectorRef,private toast : GToast) { }
+  constructor(
+    private vacunaService: VacunaService,
+    private enfermedadesService: EnfermedadesService,
+    private cdr: ChangeDetectorRef,
+    private toast: GToast
+  ) { }
 
   ngOnInit(): void {
     this.cargarVacunas();
+    this.cargarEnfermedades();
+  }
+
+  cargarEnfermedades(): void {
+    this.enfermedadesService.listarEnfermedades().subscribe({
+      next: (data) => {
+        this.enfermedades = data;
+        this.cdr.detectChanges();
+      },
+      error: (err) => console.error('Error al cargar enfermedades:', err)
+    });
+  }
+
+  get enfermedadesDisponibles(): string[] {
+    const nombres = this.enfermedades.map(e => e.nombre);
+    const actual = this.selectedVacuna.enfermedadAsociada?.trim();
+    if (actual && !nombres.includes(actual)) {
+      nombres.push(actual);
+    }
+    return nombres;
   }
 
   cargarVacunas(): void {
@@ -83,7 +112,7 @@ export class Vacunas implements OnInit {
   }
 
   abrirNuevo(): void {
-    this.selectedVacuna = {} as Vacuna;
+    this.selectedVacuna = { enfermedadAsociada: '' } as Vacuna;
     this.displayNew = true;
   }
 
@@ -100,6 +129,10 @@ export class Vacunas implements OnInit {
   }
 
   guardarCambios(): void {
+    if (!this.selectedVacuna.enfermedadAsociada?.trim()) {
+      this.toast.error('Selecciona la enfermedad asociada');
+      return;
+    }
     this.vacunaService.actualizarVacuna(this.selectedVacuna).subscribe({
       next: (res) => {
         console.log('Vacuna actualizada con éxito:', res);
@@ -115,6 +148,10 @@ export class Vacunas implements OnInit {
   }
 
   guardarNuevo(): void {
+    if (!this.selectedVacuna.enfermedadAsociada?.trim()) {
+      this.toast.error('Selecciona la enfermedad asociada');
+      return;
+    }
     this.vacunaService.crearVacuna(this.selectedVacuna).subscribe(() => {
         console.log('Vacuna guardada correctamente');
         this.toast.success("Vacuna guardada correctamente ");

@@ -22,6 +22,11 @@ public class MascotaService {
         return  mascotaRepository.findAll();
     }
 
+    public List<Mascota> listarPorCliente(Long clienteId){
+        logger.info("MASCOTAS DEL CLIENTE " + clienteId);
+        return mascotaRepository.findByClienteId(clienteId);
+    }
+
     public Mascota guardar(Mascota mascota){
         logger.info("MASCOTA GUARDADA CORRECTAMENTE" + mascota);
         return mascotaRepository.save(mascota);

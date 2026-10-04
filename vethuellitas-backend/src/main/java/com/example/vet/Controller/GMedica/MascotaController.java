@@ -21,6 +21,11 @@ public class MascotaController {
         return mascotaService.listarTodas();
     }
 
+    @GetMapping("/cliente/{clienteId}")
+    public ResponseEntity<List<Mascota>> listarPorCliente(@PathVariable Long clienteId) {
+        return ResponseEntity.ok(mascotaService.listarPorCliente(clienteId));
+    }
+
     @PostMapping
     public ResponseEntity<?> crear(@RequestBody Mascota mascota) {
         System.out.println("DATOS RECIBIDOS: " + mascota.getNombre());

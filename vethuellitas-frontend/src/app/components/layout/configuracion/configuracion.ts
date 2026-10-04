@@ -48,6 +48,11 @@ export class ConfiguracionPage implements OnInit {
     if (!input.files || input.files.length === 0) return;
 
     const archivo = input.files[0];
+    if (archivo.size > 50 * 1024 * 1024) {
+      this.toast.error('El archivo supera los 50MB');
+      input.value = '';
+      return;
+    }
     this.subiendo = true;
 
     this.uploadService.subir(archivo).subscribe({
@@ -57,7 +62,7 @@ export class ConfiguracionPage implements OnInit {
         this.cdr.detectChanges();
       },
       error: () => {
-        this.toast.error('Error al subir imagen');
+        this.toast.error('Error al subir archivo');
         this.subiendo = false;
         this.cdr.detectChanges();
       }

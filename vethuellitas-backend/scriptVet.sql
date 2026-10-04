@@ -151,7 +151,7 @@ INSERT INTO usuarios (correo, password, trabajador_id, estado) VALUES
 ('maria@vethuellitas.com','$2a$12$fIpHfhGambfFnIAXfn/sQuxP1LKWjttL9YKmaFO5QdETmyFg2qOCm',7,'ACTIVO'),
 ('elena@vethuellitas.com','$2a$12$fIpHfhGambfFnIAXfn/sQuxP1LKWjttL9YKmaFO5QdETmyFg2qOCm',8,'ACTIVO'),
 ('diego@vethuellitas.com','$2a$12$fIpHfhGambfFnIAXfn/sQuxP1LKWjttL9YKmaFO5QdETmyFg2qOCm',9,'ACTIVO'),
-('dennis@vethuellitas.com','$2a$12$fIpHfhGambfFnIAXfn/sQuxP1LKWjttL9YKmaFO5QdETmyFg2qOCm',10,'ACTIVO'),
+('fabrizio@vethuellitas.com','$2a$12$fIpHfhGambfFnIAXfn/sQuxP1LKWjttL9YKmaFO5QdETmyFg2qOCm',10,'ACTIVO'),
 ('jorge@vethuellitas.com','$2a$12$fIpHfhGambfFnIAXfn/sQuxP1LKWjttL9YKmaFO5QdETmyFg2qOCm',11,'ACTIVO'),
 ('ana@vethuellitas.com','$2a$12$fIpHfhGambfFnIAXfn/sQuxP1LKWjttL9YKmaFO5QdETmyFg2qOCm',12,'ACTIVO'),
 ('cristian@vethuellitas.com','$2a$12$fIpHfhGambfFnIAXfn/sQuxP1LKWjttL9YKmaFO5QdETmyFg2qOCm',13,'ACTIVO');
