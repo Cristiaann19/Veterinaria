@@ -133,7 +133,7 @@ CREATE TABLE `configuracion` (
 
 LOCK TABLES `configuracion` WRITE;
 /*!40000 ALTER TABLE `configuracion` DISABLE KEYS */;
-INSERT INTO `configuracion` VALUES (1,NULL,'',NULL,NULL,'Huellitas Vet','');
+INSERT INTO `configuracion` VALUES (1,'https://res.cloudinary.com/ddxdadxtr/image/upload/v1791587990/y4xfg3jsm6cpeftj4vie.webp','cristiam1598@gmail.com','https://res.cloudinary.com/ddxdadxtr/video/upload/v1791587961/moup1qheitrcphgtplar.mp4','https://res.cloudinary.com/ddxdadxtr/image/upload/v1791587682/rwwkiixxw18sjpwtfvpg.png','Huellitas Vet','907608408');
 /*!40000 ALTER TABLE `configuracion` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -676,4 +676,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2026-10-07 14:00:04
+-- Dump completed on 2026-10-09 18:40:17
