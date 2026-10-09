@@ -48,6 +48,11 @@ export class ConfiguracionPage implements OnInit {
     if (!input.files || input.files.length === 0) return;
 
     const archivo = input.files[0];
+    if (archivo.size === 0) {
+      this.toast.error('El archivo está vacío');
+      input.value = '';
+      return;
+    }
     if (archivo.size > 50 * 1024 * 1024) {
       this.toast.error('El archivo supera los 50MB');
       input.value = '';
@@ -61,8 +66,8 @@ export class ConfiguracionPage implements OnInit {
         this.subiendo = false;
         this.cdr.detectChanges();
       },
-      error: () => {
-        this.toast.error('Error al subir archivo');
+      error: (err) => {
+        this.toast.error(err.error?.error?.message || 'Error al subir archivo');
         this.subiendo = false;
         this.cdr.detectChanges();
       }

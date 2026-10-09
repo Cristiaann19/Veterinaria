@@ -16,13 +16,14 @@ public class CloudinaryService {
     private Cloudinary cloudinary;
 
     public String subir(MultipartFile archivo) throws IOException {
-        try (var inputStream = archivo.getInputStream()) {
-            Map<?, ?> resultado = cloudinary.uploader().upload(
-                    inputStream,
-                    ObjectUtils.asMap("resource_type", "auto")
-            );
-            return resultado.get("secure_url").toString();
-        }
+        Map<String, Object> params = ObjectUtils.asMap(
+                "resource_type", "auto"
+        );
+        Map<?, ?> resultado = cloudinary.uploader().upload(
+                archivo.getBytes(),
+                params
+        );
+        return resultado.get("secure_url").toString();
     }
 
     public void eliminar(String url) throws IOException {

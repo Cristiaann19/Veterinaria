@@ -80,8 +80,7 @@ INSERT INTO producto_categoria (producto_id, categoria_id) VALUES
 ((SELECT id FROM productos WHERE nombre = 'Rascador Torre'), (SELECT id FROM categorias WHERE nombre = 'Juguetes')),
 ((SELECT id FROM productos WHERE nombre = 'Cama Ortopédica'), (SELECT id FROM categorias WHERE nombre = 'Accesorios')),
 ((SELECT id FROM productos WHERE nombre = 'Pipeta Frontline'), (SELECT id FROM categorias WHERE nombre = 'Antiparasitarios')),
-((SELECT id FROM productos WHERE nombre = 'Bozal para Perro'),(SELECT id FROM categorias WHERE nombre = 'Accesorios'));
-
+((SELECT id FROM productos WHERE nombre = 'Flexi Muzzle'), (SELECT id FROM categorias WHERE nombre = 'Accesorios'));
 
 INSERT INTO servicios (nombre, descripcion, icono, precio, estado) VALUES
 ('Consulta General', 'Chequeo completo de salud.', 'stethoscope', 50.00, 'ACTIVO'),
@@ -261,24 +260,22 @@ INSERT INTO citas (estado, fecha_hora, motivo, servicio_id, mascota_id, trabajad
 ('REALIZADA', '2026-03-07 10:30:00', 'Consulta soplo cardíaco',         1,  13, 6),
 ('REALIZADA', '2026-03-10 14:00:00', 'Corte de verano',                 5,  3,  9),
 ('REALIZADA', '2026-03-11 09:00:00', 'Ecografía abdominal',             6,  5,  1),
--- CONFIRMADAS (próximas)
-('CONFIRMADA', '2026-03-14 09:00:00', 'Control post operatorio',        1,  6,  2),
-('CONFIRMADA', '2026-03-14 10:30:00', 'Vacuna quíntuple refuerzo',      2,  9,  3),
-('CONFIRMADA', '2026-03-15 09:00:00', 'Baño y corte raza',              5,  4,  8),
-('CONFIRMADA', '2026-03-15 11:00:00', 'Análisis bioquímica',            8,  8,  4),
-('CONFIRMADA', '2026-03-16 10:00:00', 'Cirugía programada',             4,  12, 12),
-('CONFIRMADA', '2026-03-17 09:30:00', 'Limpieza dental',                3,  10, 5),
-('CONFIRMADA', '2026-03-18 14:00:00', 'Ecografía control',              6,  1,  6),
-('CONFIRMADA', '2026-03-19 10:00:00', 'Rayos X columna',                7,  8,  1),
--- PENDIENTES (agendadas sin confirmar)
-('PENDIENTE', '2026-03-20 09:00:00', 'Chequeo general',                 1,  2,  2),
-('PENDIENTE', '2026-03-20 11:00:00', 'Vacunación inicial',              2,  7,  3),
-('PENDIENTE', '2026-03-21 10:00:00', 'Baño medicado',                   5,  5,  9),
-('PENDIENTE', '2026-03-22 09:30:00', 'Hemograma preventivo',            8,  13, 4),
-('PENDIENTE', '2026-03-24 14:00:00', 'Consulta primera vez',            1,  9,  1),
-('PENDIENTE', '2026-03-25 10:30:00', 'Profilaxis dental programada',    3,  7,  5),
-('PENDIENTE', '2026-03-26 09:00:00', 'Ecografía abdominal',             6,  12, 6),
-('PENDIENTE', '2026-03-28 11:00:00', 'Corte primavera',                 5,  4,  8),
+('REALIZADA', '2026-03-14 09:00:00', 'Control post operatorio',        1,  6,  2),
+('REALIZADA', '2026-03-14 10:30:00', 'Vacuna quíntuple refuerzo',      2,  9,  3),
+('REALIZADA', '2026-03-15 09:00:00', 'Baño y corte raza',              5,  4,  8),
+('REALIZADA', '2026-03-15 11:00:00', 'Análisis bioquímica',            8,  8,  4),
+('REALIZADA', '2026-03-16 10:00:00', 'Cirugía programada',             4,  12, 12),
+('REALIZADA', '2026-03-17 09:30:00', 'Limpieza dental',                3,  10, 5),
+('REALIZADA', '2026-03-18 14:00:00', 'Ecografía control',              6,  1,  6),
+('REALIZADA', '2026-03-19 10:00:00', 'Rayos X columna',                7,  8,  1),
+('REALIZADA', '2026-03-20 09:00:00', 'Chequeo general',                 1,  2,  2),
+('REALIZADA', '2026-03-20 11:00:00', 'Vacunación inicial',              2,  7,  3),
+('REALIZADA', '2026-03-21 10:00:00', 'Baño medicado',                   5,  5,  9),
+('REALIZADA', '2026-03-22 09:30:00', 'Hemograma preventivo',            8,  13, 4),
+('REALIZADA', '2026-03-24 14:00:00', 'Consulta primera vez',            1,  9,  1),
+('REALIZADA', '2026-03-25 10:30:00', 'Profilaxis dental programada',    3,  7,  5),
+('REALIZADA', '2026-03-26 09:00:00', 'Ecografía abdominal',             6,  12, 6),
+('REALIZADA', '2026-03-28 11:00:00', 'Corte primavera',                 5,  4,  8),
 -- CANCELADAS
 ('CANCELADA', '2026-02-20 09:00:00', 'Cliente no se presentó',          1,  1,  1),
 ('CANCELADA', '2026-02-22 10:00:00', 'Reagendada por el cliente',       2,  3,  2),
@@ -459,4 +456,52 @@ INSERT INTO horarios (trabajador_id, dia_semana, hora_inicio, hora_fin, activo) 
 (12, 'MONDAY',    '15:00', '18:00', true),
 (12, 'WEDNESDAY', '15:00', '18:00', true),
 (12, 'SATURDAY',  '08:00', '12:00', true);
+
+-- ══════════════════════════════════════════════
+--                 VENTAS DE PRUEBA
+-- ══════════════════════════════════════════════
+-- Asume tablas:
+--   ventas(id, fecha, total, metodo_pago, estado, cliente_id)
+--   detalle_venta(venta_id, producto_id, cantidad, precio_unitario, subtotal)
+-- Los IDs de ventas (1-8) asumen tabla vacía con AUTO_INCREMENT desde 1.
+
+INSERT INTO ventas (fecha, total, metodo_pago, estado, cliente_id) VALUES
+('2026-03-02 10:15:00', 125.00, 'EFECTIVO', 'PAGADA', (SELECT id FROM clientes WHERE correo = 'dennis@prueba.com')),
+('2026-03-04 16:40:00', 135.00, 'YAPE',     'PAGADA', (SELECT id FROM clientes WHERE correo = 'emmy@emmy.com')),
+('2026-03-07 11:05:00', 195.00, 'TARJETA',  'PAGADA', (SELECT id FROM clientes WHERE correo = 'perez.sosa@email.com')),
+('2026-03-10 09:30:00', 240.00, 'TARJETA',  'PAGADA', (SELECT id FROM clientes WHERE correo = 'ana.lopez@email.com')),
+('2026-03-12 17:20:00', 200.00, 'EFECTIVO', 'PAGADA', (SELECT id FROM clientes WHERE correo = 'mendoza.t@email.com')),
+('2026-03-15 12:10:00', 135.00, 'YAPE',     'PAGADA', (SELECT id FROM clientes WHERE correo = 'c.diaz@email.com')),
+('2026-03-18 15:45:00', 150.00, 'EFECTIVO', 'PAGADA', (SELECT id FROM clientes WHERE correo = 'sanchez.r@email.com')),
+('2026-03-20 10:50:00', 135.00, 'TARJETA',  'CANCELADA', (SELECT id FROM clientes WHERE correo = 'mpaz@email.com'));
+
+-- ══════════════════════════════════════════════
+--               DETALLE DE VENTAS
+-- ══════════════════════════════════════════════
+INSERT INTO detalle_ventas (venta_id, producto_id, cantidad, precio_unitario, subtotal) VALUES
+-- Venta 1: 125.00
+(1, (SELECT id FROM productos WHERE nombre = 'Alimento Premium'),   1,  85.00,  85.00),
+(1, (SELECT id FROM productos WHERE nombre = 'Snacks Saludables'),  2,  20.00,  40.00),
+-- Venta 2: 135.00
+(2, (SELECT id FROM productos WHERE nombre = 'Bravecto 10-20kg'),   1, 120.00, 120.00),
+(2, (SELECT id FROM productos WHERE nombre = 'Collar Reflectivo'),  1,  15.00,  15.00),
+-- Venta 3: 195.00
+(3, (SELECT id FROM productos WHERE nombre = 'Hills Science Diet'), 1, 150.00, 150.00),
+(3, (SELECT id FROM productos WHERE nombre = 'Shampoo Medicado'),   1,  45.00,  45.00),
+-- Venta 4: 240.00
+(4, (SELECT id FROM productos WHERE nombre = 'Arena para Gatos'),   2,  30.00,  60.00),
+(4, (SELECT id FROM productos WHERE nombre = 'Rascador Torre'),     1, 180.00, 180.00),
+-- Venta 5: 200.00
+(5, (SELECT id FROM productos WHERE nombre = 'Cama Ortopédica'),    1, 200.00, 200.00),
+-- Venta 6: 135.00
+(6, (SELECT id FROM productos WHERE nombre = 'Nexgard Spectra'),    1,  65.00,  65.00),
+(6, (SELECT id FROM productos WHERE nombre = 'Juguetes Dental'),    2,  25.00,  50.00),
+(6, (SELECT id FROM productos WHERE nombre = 'Snacks Saludables'),  1,  20.00,  20.00),
+-- Venta 7: 150.00
+(7, (SELECT id FROM productos WHERE nombre = 'Ricocan Cordero'),    1,  95.00,  95.00),
+(7, (SELECT id FROM productos WHERE nombre = 'Suplementos'),        1,  55.00,  55.00),
+-- Venta 8 (anulada): 135.00
+(8, (SELECT id FROM productos WHERE nombre = 'Primeros Auxilios'),  1,  65.00,  65.00),
+(8, (SELECT id FROM productos WHERE nombre = 'Flexi Muzzle'),       1,  35.00,  35.00),
+(8, (SELECT id FROM productos WHERE nombre = 'Antiparasitarios'),   1,  35.00,  35.00);
 

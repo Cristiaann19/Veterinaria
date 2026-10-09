@@ -42,6 +42,6 @@ public class Venta {
     private List<DetalleVenta> detalles = new ArrayList<>();
 
     public enum Estadoventa{
-        PENDIENTE, COMPLETADA, CANCELADA
+        PENDIENTE, PAGADA, CANCELADA
     }
 }

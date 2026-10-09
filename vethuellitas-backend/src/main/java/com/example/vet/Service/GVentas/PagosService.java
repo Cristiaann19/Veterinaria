@@ -42,7 +42,7 @@ public class PagosService {
                 .count();
 
         List<Venta> ventasCompletadas = ventaRepository.findAll().stream()
-                .filter(v -> v.getEstado() == Venta.Estadoventa.COMPLETADA)
+                .filter(v -> v.getEstado() == Venta.Estadoventa.PAGADA)
                 .toList();
 
         double totalProductos = ventasCompletadas.stream()

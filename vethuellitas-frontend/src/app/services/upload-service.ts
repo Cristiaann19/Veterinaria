@@ -8,9 +8,14 @@ export class UploadService {
 
   constructor(private http: HttpClient) {}
 
-  subir(archivo: File): Observable<{ url: string }> {
+  subir(archivo: File): Observable<{ url: string; error?: string }> {
     const formData = new FormData();
     formData.append('file', archivo);
-    return this.http.post<{ url: string }>(this.apiUrl, formData);
+    return this.http.post<{ url: string; error?: string }>(this.apiUrl, formData).pipe(
+      catchError((err) => {
+        const msg = err.error?.error?.message || err.message || 'Error al subir archivo';
+        return of({ url: '', error: msg });
+      })
+    );
   }
 }
