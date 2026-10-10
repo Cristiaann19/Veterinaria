@@ -6,6 +6,7 @@ import lombok.Data;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 @Data
 @Entity
@@ -30,6 +31,10 @@ public class Enfermedad {
     @JsonManagedReference
     @JoinTable(name = "especie_enfermedad", joinColumns = @JoinColumn(name = "enfermedad_id"), inverseJoinColumns = @JoinColumn(name = "especie_id"))
     private List<Especie> especies;
+
+    @ManyToMany(mappedBy = "enfermedades")
+    @JsonBackReference
+    private List<VacunaCatalogo> vacunas;
 
     @NotBlank(message = "La gravedad es obligatoria")
     @Size(min = 2, max = 100, message = "La gravedad debe tener entre 2 y 100 caracteres")

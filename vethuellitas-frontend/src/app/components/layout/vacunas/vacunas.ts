@@ -10,12 +10,13 @@ import { DialogModule } from 'primeng/dialog';
 import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
 import { PaginatorModule } from 'primeng/paginator';
+import { MultiSelectModule } from 'primeng/multiselect';
 import { GToast} from '../../../services/gtoast';
 
 @Component({
   selector: 'app-vacunas',
   standalone: true,
-  imports: [CommonModule, FormsModule, DialogModule, ButtonModule, InputTextModule, PaginatorModule],
+  imports: [CommonModule, FormsModule, DialogModule, ButtonModule, InputTextModule, PaginatorModule, MultiSelectModule],
   templateUrl: './vacunas.html'
 })
 
@@ -63,13 +64,8 @@ export class Vacunas implements OnInit {
     });
   }
 
-  get enfermedadesDisponibles(): string[] {
-    const nombres = this.enfermedades.map(e => e.nombre);
-    const actual = this.selectedVacuna.enfermedadAsociada?.trim();
-    if (actual && !nombres.includes(actual)) {
-      nombres.push(actual);
-    }
-    return nombres;
+  get enfermedadesDisponibles(): Enfermedad[] {
+    return this.enfermedades;
   }
 
   cargarVacunas(): void {
@@ -84,9 +80,10 @@ export class Vacunas implements OnInit {
   }
 
   filtrar(): void {
+    const termino = this.terminoBusqueda.toLowerCase();
     this.vacunasFiltradas = this.vacunas.filter(v =>
-      v.nombre.toLowerCase().includes(this.terminoBusqueda.toLowerCase()) ||
-      v.enfermedadAsociada.toLowerCase().includes(this.terminoBusqueda.toLowerCase())
+      v.nombre.toLowerCase().includes(termino) ||
+      (v.enfermedades ?? []).some(e => e.nombre.toLowerCase().includes(termino))
     );
     this.first = 0;
     this.actualizarVista();
@@ -112,7 +109,7 @@ export class Vacunas implements OnInit {
   }
 
   abrirNuevo(): void {
-    this.selectedVacuna = { enfermedadAsociada: '' } as Vacuna;
+    this.selectedVacuna = { enfermedades: [] as Enfermedad[] } as Vacuna;
     this.displayNew = true;
   }
 
@@ -129,8 +126,8 @@ export class Vacunas implements OnInit {
   }
 
   guardarCambios(): void {
-    if (!this.selectedVacuna.enfermedadAsociada?.trim()) {
-      this.toast.error('Selecciona la enfermedad asociada');
+    if (!this.selectedVacuna.enfermedades?.length) {
+      this.toast.error('Selecciona al menos una enfermedad asociada');
       return;
     }
     this.vacunaService.actualizarVacuna(this.selectedVacuna).subscribe({
@@ -148,8 +145,8 @@ export class Vacunas implements OnInit {
   }
 
   guardarNuevo(): void {
-    if (!this.selectedVacuna.enfermedadAsociada?.trim()) {
-      this.toast.error('Selecciona la enfermedad asociada');
+    if (!this.selectedVacuna.enfermedades?.length) {
+      this.toast.error('Selecciona al menos una enfermedad asociada');
       return;
     }
     this.vacunaService.crearVacuna(this.selectedVacuna).subscribe(() => {

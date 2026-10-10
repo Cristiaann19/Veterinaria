@@ -49,7 +49,15 @@
                 <div class="space-y-2 mb-4 flex-grow">
                     <div class="flex justify-between text-sm border-b border-gray-50 pb-1">
                         <span class="text-gray-500">Previene:</span>
-                        <span class="font-medium text-gray-700 text-right">{{ v.enfermedadAsociada }}</span>
+                        <span class="font-medium text-gray-700 text-right">
+                            @if (v.enfermedades && v.enfermedades.length) {
+                                @for (enf of v.enfermedades; track enf.id) {
+                                    <span class="inline-block px-2 py-0.5 bg-cyan-50 text-cyan-700 rounded text-xs font-semibold mr-1 mb-1">{{ enf.nombre }}</span>
+                                }
+                            } @else {
+                                —
+                            }
+                        </span>
                     </div>
                     <div class="flex justify-between text-sm border-b border-gray-50 pb-1">
                         <span class="text-gray-500">Edad Rec:</span>
@@ -125,14 +133,19 @@
                 </div>
             </div>
             <div class="field">
-                <label class="font-semibold text-gray-700 block mb-2 text-sm">Enfermedad Asociada:</label>
-                <select [(ngModel)]="selectedVacuna.enfermedadAsociada"
-                    class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-blue-500 focus:ring-4 focus:ring-blue-100 transition-all outline-none bg-white">
-                    <option value="" disabled>Seleccionar enfermedad</option>
-                    @for (nombre of enfermedadesDisponibles; track nombre) {
-                        <option [value]="nombre">{{ nombre }}</option>
-                    }
-                </select>
+                <label class="font-semibold text-gray-700 block mb-2 text-sm">Enfermedades Asociadas:</label>
+                <p-multiSelect [(ngModel)]="selectedVacuna.enfermedades" [options]="enfermedadesDisponibles"
+                    optionLabel="nombre" defaultLabel="Seleccionar enfermedades"
+                    appendTo="body"
+                    class="w-full"
+                    [style]="{'width': '100%'}"
+                    [panelStyle]="{'max-height': '200px', 'overflow-y': 'auto'}">
+                    <ng-template let-enfermedad pTemplate="item">
+                        <div class="flex items-center gap-2">
+                            <span>{{ enfermedad.nombre }}</span>
+                        </div>
+                    </ng-template>
+                </p-multiSelect>
             </div>
         </div>
         <ng-template pTemplate="footer">
@@ -213,14 +226,19 @@
             </div>
 
             <div class="field">
-                <label class="font-semibold text-gray-700 block mb-2 text-sm">Enfermedad Asociada</label>
-                <select [(ngModel)]="selectedVacuna.enfermedadAsociada"
-                    class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-blue-500 focus:ring-4 focus:ring-blue-100 transition-all outline-none bg-white">
-                    <option value="" disabled>Seleccionar enfermedad</option>
-                    @for (nombre of enfermedadesDisponibles; track nombre) {
-                        <option [value]="nombre">{{ nombre }}</option>
-                    }
-                </select>
+                <label class="font-semibold text-gray-700 block mb-2 text-sm">Enfermedades Asociadas</label>
+                <p-multiSelect [(ngModel)]="selectedVacuna.enfermedades" [options]="enfermedadesDisponibles"
+                    optionLabel="nombre" defaultLabel="Seleccionar enfermedades"
+                    appendTo="body"
+                    class="w-full"
+                    [style]="{'width': '100%'}"
+                    [panelStyle]="{'max-height': '200px', 'overflow-y': 'auto'}">
+                    <ng-template let-enfermedad pTemplate="item">
+                        <div class="flex items-center gap-2">
+                            <span>{{ enfermedad.nombre }}</span>
+                        </div>
+                    </ng-template>
+                </p-multiSelect>
             </div>
 
         </div>

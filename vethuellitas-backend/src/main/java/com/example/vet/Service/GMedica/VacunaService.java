@@ -45,7 +45,7 @@ public class VacunaService {
             vacunaExistente.setPrecio(vacuna.getPrecio());
             vacunaExistente.setDosis(vacuna.getDosis());
             vacunaExistente.setEdadRecomendada(vacuna.getEdadRecomendada());
-            vacunaExistente.setEnfermedadAsociada(vacuna.getEnfermedadAsociada());
+            vacunaExistente.setEnfermedades(vacuna.getEnfermedades());
             return guardar(vacunaExistente);
         }
         return null;

@@ -3,6 +3,10 @@ package com.example.vet.Model.GestionMedica;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.Data;
+import java.util.ArrayList;
+import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Data
 @Entity
@@ -23,10 +27,10 @@ public class VacunaCatalogo {
     @Column(nullable = false, length = 100)
     private String fabricante;
 
-    @NotBlank(message = "La enfermedad asociada es obligatoria")
-    @Size(min = 2, max = 100, message = "La enfermedad asociada debe tener entre 2 y 100 caracteres")
-    @Column(nullable = false, length = 100)
-    private String enfermedadAsociada;
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JsonIgnoreProperties("vacunas")
+    @JoinTable(name = "vacuna_enfermedad", joinColumns = @JoinColumn(name = "vacuna_id"), inverseJoinColumns = @JoinColumn(name = "enfermedad_id"))
+    private List<Enfermedad> enfermedades = new ArrayList<>();
 
     @NotNull(message = "La edad recomendada es obligatoria")
     @Min(value = 0, message = "La edad recomendada debe ser mayor o igual a 0")
