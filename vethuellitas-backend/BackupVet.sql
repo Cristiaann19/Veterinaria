@@ -605,6 +605,33 @@ INSERT INTO `usuarios_roles` VALUES (13,1),(14,2),(15,2),(16,2),(17,2),(18,2),(1
 UNLOCK TABLES;
 
 --
+-- Table structure for table `vacuna_enfermedad`
+--
+
+DROP TABLE IF EXISTS `vacuna_enfermedad`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `vacuna_enfermedad` (
+  `vacuna_id` bigint NOT NULL,
+  `enfermedad_id` bigint NOT NULL,
+  KEY `FK916w69yh7wi6xsbu0slei33ql` (`enfermedad_id`),
+  KEY `FKw4c7ypo8x5kkutibshy2gban` (`vacuna_id`),
+  CONSTRAINT `FK916w69yh7wi6xsbu0slei33ql` FOREIGN KEY (`enfermedad_id`) REFERENCES `enfermedades` (`id`),
+  CONSTRAINT `FKw4c7ypo8x5kkutibshy2gban` FOREIGN KEY (`vacuna_id`) REFERENCES `vacunas` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `vacuna_enfermedad`
+--
+
+LOCK TABLES `vacuna_enfermedad` WRITE;
+/*!40000 ALTER TABLE `vacuna_enfermedad` DISABLE KEYS */;
+INSERT INTO `vacuna_enfermedad` VALUES (1,1),(1,2),(2,8),(3,2),(3,1),(10,8),(9,5),(8,5),(8,4),(4,5),(5,6),(6,2),(7,1),(7,5),(7,6);
+/*!40000 ALTER TABLE `vacuna_enfermedad` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `vacunas`
 --
 
@@ -615,7 +642,6 @@ CREATE TABLE `vacunas` (
   `id` bigint NOT NULL AUTO_INCREMENT,
   `dosis` int NOT NULL,
   `edad_recomendada` int NOT NULL,
-  `enfermedad_asociada` varchar(100) NOT NULL,
   `fabricante` varchar(100) NOT NULL,
   `nombre` varchar(100) NOT NULL,
   `precio` double NOT NULL,
@@ -632,7 +658,7 @@ CREATE TABLE `vacunas` (
 
 LOCK TABLES `vacunas` WRITE;
 /*!40000 ALTER TABLE `vacunas` DISABLE KEYS */;
-INSERT INTO `vacunas` VALUES (1,1,1,'Parvovirus y Distemper','MSD Animal Health','Nobivac Puppy DP',45),(2,2,2,'Lab-Vet','Antirrábica','Parvovirus',45),(3,1,2,'Distemper, Adenovirus, Parvovirus, Parainfluenza','Zoetis','Vanguard Plus 5 (Quíntuple)',55),(4,1,3,'Quíntuple + Lepto','Boehringer Ingelheim','Recombitek C6 (Séptuple)',65),(5,1,3,'Tos de las Perreras (Bordetella)','Zoetis','Bronchi-Shield (KC)',40),(6,2,4,'Giardia Lamblia','Zoetis','GiardiaVax',50),(7,1,2,'Rinotraqueitis, Calicivirus, Panleucopenia','Zoetis','Felocell 3 (Triple Felina)',45),(8,1,3,'Leucemia Felina','Virbac','Leucogen',60),(9,1,2,'Calicivirus, Herpesvirus, Panleucopenia','MSD','Nobivac Tricat Trio',50),(10,1,4,'Rabia','Boehringer Ingelheim','Rabisin',35);
+INSERT INTO `vacunas` VALUES (1,1,1,'MSD Animal Health','Nobivac Puppy DP',45),(2,2,2,'Antirrábica','Parvovirus',45),(3,1,2,'Zoetis','Vanguard Plus 5 (Quíntuple)',55),(4,1,3,'Boehringer Ingelheim','Recombitek C6 (Séptuple)',65),(5,1,3,'Zoetis','Bronchi-Shield (KC)',40),(6,2,4,'Zoetis','GiardiaVax',50),(7,1,2,'Zoetis','Felocell 3 (Triple Felina)',45),(8,1,3,'Virbac','Leucogen',60),(9,1,2,'MSD','Nobivac Tricat Trio',50),(10,1,4,'Boehringer Ingelheim','Rabisin',35);
 /*!40000 ALTER TABLE `vacunas` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -676,4 +702,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2026-10-09 18:40:17
+-- Dump completed on 2026-10-09 20:19:27

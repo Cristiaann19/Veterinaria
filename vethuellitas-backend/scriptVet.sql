@@ -20,18 +20,19 @@ DESCRIBE usuarios;
 DESCRIBE clientes;
 
 --  MODELO DE INSERTS DE VACUNAS
-INSERT INTO vacunas(nombre, fabricante, enfermedad_asociada, edad_recomendada, dosis, precio) VALUES
+-- FALTA ASOCIAR LOS INTO VACUNA_ENFERMEDAD
+INSERT INTO vacunas(nombre, fabricante, edad_recomendada, dosis, precio) VALUES
 -- PERROS
-('Nobivac Puppy DP', 'MSD Animal Health', 'Parvovirus y Distemper', 1, 1, 45.00),
-('Parvovirus','Antirrábica','Lab-Vet',2,2, 45.0),
-('Vanguard Plus 5 (Quíntuple)', 'Zoetis', 'Distemper, Adenovirus, Parvovirus, Parainfluenza', 2, 1, 55.00),
-('Recombitek C6 (Séptuple)', 'Boehringer Ingelheim', 'Quíntuple + Lepto', 3, 1, 65.00),
-('Bronchi-Shield (KC)', 'Zoetis', 'Tos de las Perreras (Bordetella)', 3, 1, 40.00),
-('GiardiaVax', 'Zoetis', 'Giardia Lamblia', 4, 2, 50.00),
-('Felocell 3 (Triple Felina)', 'Zoetis', 'Rinotraqueitis, Calicivirus, Panleucopenia', 2, 1, 45.00),
-('Leucogen', 'Virbac', 'Leucemia Felina', 3, 1, 60.00),
-('Nobivac Tricat Trio', 'MSD', 'Calicivirus, Herpesvirus, Panleucopenia', 2, 1, 50.00),
-('Rabisin', 'Boehringer Ingelheim', 'Rabia', 4, 1, 35.00);
+('Nobivac Puppy DP', 'MSD Animal Health', 1, 1, 45.00),
+('Parvovirus','Antirrábica',2,2, 45.0),
+('Vanguard Plus 5 (Quíntuple)', 'Zoetis', 2, 1, 55.00),
+('Recombitek C6 (Séptuple)', 3, 1, 65.00),
+('Bronchi-Shield (KC)', 'Zoetis', 3, 1, 40.00),
+('GiardiaVax', 'Zoetis', 4, 2, 50.00),
+('Felocell 3 (Triple Felina)', 'Zoetis', 2, 1, 45.00),
+('Leucogen', 'Virbac', 3, 1, 60.00),
+('Nobivac Tricat Trio', 'MSD', 2, 1, 50.00),
+('Rabisin', 'Boehringer Ingelheim', 4, 1, 35.00);
 
 INSERT INTO productos (nombre, descripcion, precio, stock, imagen_url) VALUES
 ('Antiparasitarios', 'Protección completa contra pulgas y garrapatas.', 35.00, 100, 'https://res.cloudinary.com/ddxdadxtr/image/upload/v1788636099/errdypfcylel82kxtamp.webp'),

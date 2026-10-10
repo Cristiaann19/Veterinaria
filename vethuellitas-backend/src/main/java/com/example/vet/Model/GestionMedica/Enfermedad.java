@@ -1,14 +1,20 @@
 package com.example.vet.Model.GestionMedica;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import lombok.NoArgsConstructor;
 
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name = "enfermedades")
 public class Enfermedad {
@@ -28,12 +34,14 @@ public class Enfermedad {
     private String descripcion;
 
     @ManyToMany(fetch = FetchType.EAGER)
-    @JsonManagedReference
-    @JoinTable(name = "especie_enfermedad", joinColumns = @JoinColumn(name = "enfermedad_id"), inverseJoinColumns = @JoinColumn(name = "especie_id"))
+    @JsonIgnoreProperties("enfermedades")
+    @JoinTable(name = "especie_enfermedad",
+            joinColumns = @JoinColumn(name = "enfermedad_id"),
+            inverseJoinColumns = @JoinColumn(name = "especie_id"))
     private List<Especie> especies;
 
     @ManyToMany(mappedBy = "enfermedades")
-    @JsonBackReference
+    @JsonIgnore
     private List<VacunaCatalogo> vacunas;
 
     @NotBlank(message = "La gravedad es obligatoria")

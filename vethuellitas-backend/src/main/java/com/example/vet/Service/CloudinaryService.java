@@ -24,7 +24,7 @@ public class CloudinaryService {
                 params
         );
         return resultado.get("secure_url").toString();
-    }   
+    }
 
     public void eliminar(String url) throws IOException {
         String publicId = extraerPublicId(url);
