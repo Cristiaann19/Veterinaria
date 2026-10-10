@@ -56,6 +56,7 @@ public class TrabajadorService {
         t.setCargo(Trabajador.cargoTrabajador.valueOf(dto.getCargo()));
         t.setTelefono(dto.getTelefono());
         t.setCorreo(dto.getCorreo());
+        t.setDireccion(dto.getDireccion());
         t.setEstado(Trabajador.estadoTrabajador.valueOf(dto.getEstado()));
         return trabajadorRepository.save(t);
     }
@@ -69,6 +70,7 @@ public class TrabajadorService {
         if (dto.getCargo() != null)     t.setCargo(Trabajador.cargoTrabajador.valueOf(dto.getCargo()));
         if (dto.getTelefono() != null)  t.setTelefono(dto.getTelefono());
         if (dto.getCorreo() != null)    t.setCorreo(dto.getCorreo());
+        if (dto.getDireccion() != null) t.setDireccion(dto.getDireccion());
         if (dto.getEstado() != null)    t.setEstado(Trabajador.estadoTrabajador.valueOf(dto.getEstado()));
 
         return trabajadorRepository.save(t);

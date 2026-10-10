@@ -8,6 +8,7 @@ import { PaginatorModule } from 'primeng/paginator';
 import { TableModule } from 'primeng/table';
 import { Trabajador } from '../../../models/trabajador';
 import { TrabajadorService } from '../../../services/trabajador-service';
+import { DniService } from '../../../services/dni-service';
 import { ChangeDetectorRef } from '@angular/core';
 import { HttpClient} from '@angular/common/http';
 import { GToast} from '../../../services/gtoast';
@@ -37,7 +38,10 @@ export class Trabajadores implements OnInit {
   first: number = 0;
   rows: number = 8;
 
-  constructor(private trabajadorService: TrabajadorService, private cdr: ChangeDetectorRef, private http :HttpClient , private toast : GToast) { }
+  cargandoDni: boolean = false;
+  ultimoDniConsultado: string = '';
+
+  constructor(private trabajadorService: TrabajadorService, private cdr: ChangeDetectorRef, private http :HttpClient , private toast : GToast, private dniService: DniService) { }
 
   ngOnInit(): void {
     this.listarTrabajadores();
@@ -81,12 +85,37 @@ export class Trabajadores implements OnInit {
     this.selectedTrabajador = {
       ...trabajador,
     };
+    this.ultimoDniConsultado = trabajador.dni;
     this.displayEdit = true;
   }
 
   abrirNuevo(): void {
     this.selectedTrabajador = {} as Trabajador;
+    this.ultimoDniConsultado = '';
     this.displayNew = true;
+  }
+
+  consultarDniTrabajador(): void {
+    const dni = (this.selectedTrabajador.dni ?? '').trim();
+    if (!/^\d{8}$/.test(dni) || dni === this.ultimoDniConsultado) return;
+
+    this.cargandoDni = true;
+    this.cdr.detectChanges();
+    this.dniService.consultarDni(dni).subscribe({
+      next: (datos) => {
+        this.ultimoDniConsultado = dni;
+        this.selectedTrabajador.nombres = datos.nombres;
+        this.selectedTrabajador.apellidos = `${datos.apePaterno} ${datos.apeMaterno}`.trim();
+        this.selectedTrabajador.direccion = datos.direccion ?? '';
+        this.cargandoDni = false;
+        this.cdr.detectChanges();
+      },
+      error: (err) => {
+        this.cargandoDni = false;
+        this.cdr.detectChanges();
+        this.toast.error(typeof err.error === 'string' && err.error ? err.error : 'No se pudo consultar el DNI');
+      }
+    });
   }
 
   guardarCambios(): void {
@@ -98,6 +127,7 @@ export class Trabajadores implements OnInit {
       correo: this.selectedTrabajador.correo,
       dni: this.selectedTrabajador.dni,
       telefono: this.selectedTrabajador.telefono,
+      direccion: this.selectedTrabajador.direccion,
     };
     console.log('Request enviado:', request);
 
@@ -125,6 +155,7 @@ export class Trabajadores implements OnInit {
       dni: trabajador.dni,
       telefono: trabajador.telefono,
       correo: trabajador.correo,
+      direccion: trabajador.direccion,
     };
 
     this.http.put(`http://localhost:8080/api/trabajadores/${trabajador.id}`, request)
@@ -174,6 +205,7 @@ export class Trabajadores implements OnInit {
       correo: this.selectedTrabajador.correo,
       dni: this.selectedTrabajador.dni,
       telefono: this.selectedTrabajador.telefono,
+      direccion: this.selectedTrabajador.direccion,
     };
 
     this.http.post('http://localhost:8080/api/trabajadores', request)

@@ -126,20 +126,20 @@ INSERT INTO roles (nombre) VALUES
 ('ROLE_USER'),
 ('ROLE_VET');
 
-INSERT INTO trabajadores (apellidos, nombres, correo, cargo, dni, telefono, estado) VALUES 
-('ZUMAETA GOLAC','JUNIOR FERNANDO' ,'jufer@vethuellitas.com','VETERINARIO','71374454','987654321','ACTIVO'),
-('RAMIREZ LOPEZ','CARLA ANDREA','carla@vethuellitas.com','VETERINARIO','74561234','912345678','ACTIVO'),
-('TORRES VASQUEZ','LUIS MIGUEL','luis@vethuellitas.com','VETERINARIO','75678901','923456789','ACTIVO'),
-('MENDOZA FLORES','RICARDO DANIEL','ricardo@vethuellitas.com','VETERINARIO','79012345','967890123','ACTIVO'),
-('GARCIA CHAVEZ','PAOLA ESTEFANIA','paola@vethuellitas.com','VETERINARIO','70123456','978901234','ACTIVO'),
-('ORTIZ CAMPOS','MARTIN EDUARDO','martin@vethuellitas.com','VETERINARIO','73456789','901234567','ACTIVO'),
-('CASTILLO RUIZ','MARIA FERNANDA','maria@vethuellitas.com','RECEPCIONISTA','76789012','934567890','ACTIVO'),
-('RODRIGUEZ PEREZ','ELENA SOFIA','elena@vethuellitas.com','ESTILISTA','78901234','956789012','ACTIVO'),
-('VARGAS QUISPE','DIEGO ARMANDO','diego@vethuellitas.com','ESTILISTA','71234567','989012345','ACTIVO'),
-('HUAMAN CRUZ', 'DENNIS FABRIZIO','fabrizio@vethuellitas.com','CIRUJANO','73381545','920625158','ACTIVO'),
-('SANCHEZ DIAZ','JORGE ALBERTO','jorge@vethuellitas.com','CIRUJANO','77890123','945678901','ACTIVO'),
-('RIVERA SALAZAR','ANA LUCIA','ana@vethuellitas.com','CIRUJANO','72345678','990123456','ACTIVO'),
-('HUAMAN CRUZ','CRISTIAN JESUS','cristian@vethuellitas.com','VETERINARIO','73381544','907608480','ACTIVO');
+INSERT INTO trabajadores (apellidos, nombres, correo, cargo, dni, telefono, estado, direccion) VALUES 
+('ZUMAETA GOLAC','JUNIOR FERNANDO' ,'jufer@vethuellitas.com','VETERINARIO','71374454','987654321','ACTIVO','Av. España 123'),
+('RAMIREZ LOPEZ','CARLA ANDREA','carla@vethuellitas.com','VETERINARIO','74561234','912345678','ACTIVO','Jr. Cusco 456'),
+('TORRES VASQUEZ','LUIS MIGUEL','luis@vethuellitas.com','VETERINARIO','75678901','923456789','ACTIVO','Urb. Villa Reina Mz. B Lt. 12'),
+('MENDOZA FLORES','RICARDO DANIEL','ricardo@vethuellitas.com','VETERINARIO','79012345','967890123','ACTIVO','Av. Mansiche 789'),
+('GARCIA CHAVEZ','PAOLA ESTEFANIA','paola@vethuellitas.com','VETERINARIO','70123456','978901234','ACTIVO','Calle San Martin 321'),
+('ORTIZ CAMPOS','MARTIN EDUARDO','martin@vethuellitas.com','VETERINARIO','73456789','901234567','ACTIVO','Av. La Libertad 654'),
+('CASTILLO RUIZ','MARIA FERNANDA','maria@vethuellitas.com','RECEPCIONISTA','76789012','934567890','ACTIVO','Jr. Bolognesi 987'),
+('RODRIGUEZ PEREZ','ELENA SOFIA','elena@vethuellitas.com','ESTILISTA','78901234','956789012','ACTIVO','Urb. Los Jardines Fase 2 Lt. 45'),
+('VARGAS QUISPE','DIEGO ARMANDO','diego@vethuellitas.com','ESTILISTA','71234567','989012345','ACTIVO','Av. Huanchaco 159'),
+('HUAMAN CRUZ', 'DENNIS FABRIZIO','fabrizio@vethuellitas.com','CIRUJANO','73381545','920625158','ACTIVO','Incanato 1128'),
+('SANCHEZ DIAZ','JORGE ALBERTO','jorge@vethuellitas.com','CIRUJANO','77890123','945678901','ACTIVO','Calle Los Cocoteros 234'),
+('RIVERA SALAZAR','ANA LUCIA','ana@vethuellitas.com','CIRUJANO','72345678','990123456','ACTIVO','Av. Hiram Bingham 567'),
+('HUAMAN CRUZ','CRISTIAN JESUS','cristian@vethuellitas.com','VETERINARIO','73381544','907608480','ACTIVO','Jr. Independencia 890');
 
 INSERT INTO usuarios (correo, password, trabajador_id, estado) VALUES
 ('jufer@vethuellitas.com','$2a$12$fIpHfhGambfFnIAXfn/sQuxP1LKWjttL9YKmaFO5QdETmyFg2qOCm',1,'ACTIVO'),

@@ -110,8 +110,10 @@
                  class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-[#0D72C5] outline-none" placeholder="Apellidos"/>
         </div>
         <div>
-          <label class="text-xs font-semibold text-gray-600 block mb-1">DNI *</label>
-          <input pInputText [(ngModel)]="selectedCliente.dni" maxlength="8"
+          <label class="text-xs font-semibold text-gray-600 mb-1 flex items-center gap-2">DNI *
+            <i *ngIf="cargandoDni" class="pi pi-spin pi-spinner text-[#0D72C5] text-xs"></i>
+          </label>
+          <input pInputText [(ngModel)]="selectedCliente.dni" maxlength="8" (blur)="consultarDniCliente()"
                  class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-[#0D72C5] outline-none" placeholder="12345678"/>
         </div>
         <div>
@@ -158,8 +160,10 @@
                  class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-[#0D72C5] outline-none"/>
         </div>
         <div>
-          <label class="text-xs font-semibold text-gray-600 block mb-1">DNI *</label>
-          <input pInputText [(ngModel)]="selectedCliente.dni" maxlength="8"
+          <label class="text-xs font-semibold text-gray-600 mb-1 flex items-center gap-2">DNI *
+            <i *ngIf="cargandoDni" class="pi pi-spin pi-spinner text-[#0D72C5] text-xs"></i>
+          </label>
+          <input pInputText [(ngModel)]="selectedCliente.dni" maxlength="8" (blur)="consultarDniCliente()"
                  class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-[#0D72C5] outline-none"/>
         </div>
         <div>

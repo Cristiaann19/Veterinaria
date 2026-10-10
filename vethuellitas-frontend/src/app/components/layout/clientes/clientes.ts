@@ -10,6 +10,7 @@ import { Cliente } from '../../../models/cliente';
 import { Mascota } from '../../../models/mascota';
 import { ClienteService } from '../../../services/cliente-service';
 import { MascotasService } from '../../../services/mascotas-service';
+import { DniService } from '../../../services/dni-service';
 import { GToast } from '../../../services/gtoast';
 
 @Component({
@@ -38,9 +39,13 @@ export class Clientes implements OnInit {
   first = 0;
   rows = 8;
 
+  cargandoDni = false;
+  ultimoDniConsultado = '';
+
   constructor(
     private clienteService: ClienteService,
     private mascotasService: MascotasService,
+    private dniService: DniService,
     private toast: GToast,
     private cdr: ChangeDetectorRef
   ) {}
@@ -89,12 +94,39 @@ export class Clientes implements OnInit {
 
   abrirNuevo(): void {
     this.selectedCliente = this.clienteVacio();
+    this.ultimoDniConsultado = '';
     this.displayNew = true;
   }
 
   abrirEditar(cliente: Cliente): void {
     this.selectedCliente = { ...cliente };
+    this.ultimoDniConsultado = cliente.dni;
     this.displayEdit = true;
+  }
+
+  consultarDniCliente(): void {
+    const dni = (this.selectedCliente.dni ?? '').trim();
+    if (!/^\d{8}$/.test(dni) || dni === this.ultimoDniConsultado) return;
+
+    this.cargandoDni = true;
+    this.cdr.markForCheck();
+    this.dniService.consultarDni(dni).subscribe({
+      next: (datos) => {
+        Promise.resolve().then(() => {
+          this.ultimoDniConsultado = dni;
+          this.selectedCliente.nombres = datos.nombres;
+          this.selectedCliente.apellidos = `${datos.apePaterno} ${datos.apeMaterno}`.trim();
+          if (datos.direccion) this.selectedCliente.direccion = datos.direccion;
+          this.cargandoDni = false;
+          this.cdr.markForCheck();
+        });
+      },
+      error: (err) => {
+        this.cargandoDni = false;
+        this.cdr.markForCheck();
+        this.toast.error(typeof err.error === 'string' && err.error ? err.error : 'No se pudo consultar el DNI');
+      }
+    });
   }
 
   confirmarEliminar(cliente: Cliente): void {

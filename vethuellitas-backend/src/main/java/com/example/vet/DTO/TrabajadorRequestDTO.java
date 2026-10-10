@@ -11,4 +11,5 @@ public class TrabajadorRequestDTO {
     private String correo;
     private String dni;
     private String telefono;
+    private String direccion;
 }

@@ -21,6 +21,22 @@ public class ClienteController {
         return ResponseEntity.ok(clienteService.guardar(cliente));
     }
 
+    @PostMapping
+    public ResponseEntity<Cliente> crearCliente(@RequestBody Cliente cliente) {
+        return ResponseEntity.ok(clienteService.guardar(cliente));
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Cliente> actualizar(@PathVariable Long id, @RequestBody Cliente cliente) {
+        return ResponseEntity.ok(clienteService.actualizar(id, cliente));
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> eliminar(@PathVariable Long id) {
+        clienteService.eliminar(id);
+        return ResponseEntity.noContent().build();
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<Cliente> obtenerPorId(@PathVariable Long id) {
         Cliente cliente = clienteService.buscarPorId(id);

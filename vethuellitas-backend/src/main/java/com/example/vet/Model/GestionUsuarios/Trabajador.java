@@ -27,6 +27,8 @@ public class Trabajador {
     @NotBlank(message = "El apellido es obligatorio")
     private String apellidos;
 
+    private String direccion;
+
     @Enumerated(EnumType.STRING)
     private cargoTrabajador cargo;
 

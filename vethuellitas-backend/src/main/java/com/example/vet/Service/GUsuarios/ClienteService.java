@@ -27,6 +27,28 @@ public class ClienteService {
         return clienteRepository.save(cliente);
     }
 
+    public Cliente actualizar(Long id, Cliente cliente) {
+        Cliente existente = clienteRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Cliente no encontrado: " + id));
+
+        if (cliente.getNombres() != null)   existente.setNombres(cliente.getNombres());
+        if (cliente.getApellidos() != null) existente.setApellidos(cliente.getApellidos());
+        if (cliente.getDni() != null)       existente.setDni(cliente.getDni());
+        if (cliente.getDireccion() != null) existente.setDireccion(cliente.getDireccion());
+        if (cliente.getTelefono() != null)  existente.setTelefono(cliente.getTelefono());
+        if (cliente.getCorreo() != null)    existente.setCorreo(cliente.getCorreo());
+
+        logger.info("CLIENTE ACTUALIZADO CORRECTAMENTE");
+        return clienteRepository.save(existente);
+    }
+
+    public void eliminar(Long id) {
+        Cliente cliente = clienteRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Cliente no encontrado: " + id));
+        clienteRepository.delete(cliente);
+        logger.info("CLIENTE ELIMINADO CORRECTAMENTE");
+    }
+
     public Cliente buscarPorId(Long id) {
         return clienteRepository.findById(id).orElse(null);
     }

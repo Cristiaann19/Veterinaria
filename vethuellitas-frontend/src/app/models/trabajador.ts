@@ -5,7 +5,8 @@ export interface Trabajador {
     dni: string;
     nombres: string;
     apellidos: string;
-    cargo: 'VETERINARIO' | 'ESTILISTA' | 'CIRUJANO' | 'RECEPCIONISTA';
+    direccion: string;
+    cargo: 'VETERINARIO' | 'ESTILISTA' | 'RECEPCIONISTA' | 'CIRUJANO';
     telefono: string;
     correo: string;
     estado: 'ACTIVO' | 'INACTIVO';
